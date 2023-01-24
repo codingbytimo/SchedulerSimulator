@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import java.awt.FlowLayout;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -15,18 +17,25 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 import javax.swing.JFormattedTextField;
+import javax.swing.JTabbedPane;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Font;
+import javax.swing.JTextPane;
 
 public class View extends JFrame {
 	
-	JTable table;
-	private JPanel panel;
-	private JLabel lblInput;
-	private JLabel lblWaitingTime;
-	private JLabel lblCalculatingTime;
-	private JButton btnRun;
-	private JButton btnAddProcess;
-	private JFormattedTextField formattedTextField;
-	private JFormattedTextField formattedTextField_1;
+	private JTabbedPane tabbedPane;
+	
+	// JPanel Deklaration
+	private JPanel panelSim;
+	private JPanel panelConfigure;
+	private JLabel lblAddProcess;
+	private JTable table;
+	private JButton btnNewProcess;
+	private JButton btnRemoveProcess;
+	
 	
 	public View() {
 		
@@ -34,22 +43,12 @@ public class View extends JFrame {
 		setSize(800, 450);
 		setTitle("Scheduler von Timo");
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		table = new JTable();
-		getContentPane().add(table);
 		
-		btnRun = new JButton("Run");
-		getContentPane().add(btnRun, BorderLayout.SOUTH);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
-		panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.NORTH);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		panel.setBackground(Color.YELLOW);
-		
-		lblInput = new JLabel("[PROCESS INPUT]");
-		panel.add(lblInput);
-		
-		lblWaitingTime = new JLabel("Waiting time:");
-		panel.add(lblWaitingTime);
+		panelSim = new JPanel();
+		panelConfigure = new JPanel();
 		
 		NumberFormat format = NumberFormat.getInstance();
 	    NumberFormatter formatter = new NumberFormatter(format) {
@@ -64,22 +63,61 @@ public class View extends JFrame {
 	    formatter.setMinimum(0);
 	    formatter.setMaximum(Integer.MAX_VALUE);
 	    formatter.setAllowsInvalid(false);
+		
+	    tabbedPane.addTab("Sim", panelSim);
+	    panelSim.setLayout(null);
 	    
-		formattedTextField = new JFormattedTextField(formatter);
-		formattedTextField.setColumns(4);
-		panel.add(formattedTextField);
-		
-		lblCalculatingTime = new JLabel("Calculating time:");
-		panel.add(lblCalculatingTime);
-		
-		formattedTextField_1 = new JFormattedTextField(formatter);
-		formattedTextField_1.setColumns(4);
-		panel.add(formattedTextField_1);
-		
-		btnAddProcess = new JButton("Add Process");
-		panel.add(btnAddProcess);
-		
+	    JButton btnRun = new JButton("Run");
+	    btnRun.setBounds(10, 11, 89, 23);
+	    panelSim.add(btnRun);
+	    
+	    JTextPane textPane = new JTextPane();
+	    textPane.setBounds(10, 45, 600, 300);
+	    panelSim.add(textPane);
+	    tabbedPane.addTab("Configure", panelConfigure);
+	    panelConfigure.setLayout(null);
+	    
+	    lblAddProcess = new JLabel("Add processes for scheduling:");
+	    lblAddProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
+	    lblAddProcess.setBounds(10, 11, 300, 14);
+	    panelConfigure.add(lblAddProcess);
+	    
+	    table = new JTable();
+	    table.setBounds(10, 36, 600, 300);
+	    table.getTableHeader();
+	    panelConfigure.add(table);
+	    
+	    btnNewProcess = new JButton("Add process");
+	    btnNewProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
+	    btnNewProcess.setBounds(10, 347, 150, 23);
+	    panelConfigure.add(btnNewProcess);
+	    
+	    btnRemoveProcess = new JButton("Remove process");
+	    btnRemoveProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
+	    btnRemoveProcess.setBounds(170, 347, 150, 23);
+	    panelConfigure.add(btnRemoveProcess);
+	    
 		
 	}
-	
+
+
+	public JButton getBtnRemoveProcess() {
+		return btnRemoveProcess;
+	}
+
+
+	public JButton getBtnNewProcess() {
+		return btnNewProcess;
+	}
+
+
+	public JTable getTable() {
+		return table;
+	}
+
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
 }
