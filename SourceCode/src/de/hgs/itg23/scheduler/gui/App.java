@@ -8,6 +8,7 @@ public class App {
 		View v = new View();
 		v.setVisible(true);
 		Controller c = new Controller(m, v);
+		c.initController();
 	}
 
 }

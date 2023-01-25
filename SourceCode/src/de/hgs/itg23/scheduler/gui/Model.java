@@ -95,7 +95,7 @@ public class Model extends AbstractTableModel {
 			}
 			
 			public void appendEmptyRow() {
-				data.add(new Process("", 0, 0));
+				data.add(new Process("", 1, 1));
 				int count = getRowCount();
 				fireTableRowsInserted(count-1, count-1); 
 			}
