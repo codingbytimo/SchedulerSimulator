@@ -2,11 +2,14 @@ package de.hgs.itg23.scheduler.gui;
 
 import java.awt.event.ActionEvent;
 
+import de.hgs.itg23.scheduler.model.Scheduler;
+
 public class Controller {
 	
 	private Model model; 
 	private View view;
-
+	private Scheduler scheduler;
+	
 	public Controller(Model m, View v) { 
 
 	  model = m;

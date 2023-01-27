@@ -1,6 +1,7 @@
 package de.hgs.itg23.scheduler.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import de.hgs.itg23.scheduler.gui.Controller;
 import de.hgs.itg23.scheduler.gui.Model;
@@ -8,18 +9,32 @@ import de.hgs.itg23.scheduler.gui.Model;
 public class Scheduler {
 	
 	private Controller controller;
-	private Model model;
+	private Model m;
 	private Process process;
 	
-	ArrayList<Process> data = model.getData();
+	String[] pName = new String[m.getRowCount()];
+	String[] pTime = new String[m.getRowCount()];
+	int[] pPrio = new int[m.getRowCount()];
 	
-	public Scheduler(Model m, Controller c) {
-		model = m;
-		controller = c;
+	public String[] getName() {
+		for(int i = 0; i <= m.getRowCount(); i++) {
+			pName[i] = (String)m.getValueAt(0, i);
+		}
+		return pName;
 	}
 	
-	public void splitTime() {
-		
+	public String[] getTime() {
+		for(int i = 0; i <= m.getRowCount(); i++) {
+			pTime[i] = (String)m.getValueAt(1, i);
+		}
+		return pTime;
+	}
+	
+	public int[] getPrio() {
+		for(int i = 0; i <= m.getRowCount(); i++) {
+			pPrio[i] = (Integer)m.getValueAt(2, i);
+		}
+		return pPrio;
 	}
 	
 }
