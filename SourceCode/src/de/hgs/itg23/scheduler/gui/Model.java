@@ -14,13 +14,12 @@ public class Model extends AbstractTableModel {
 	private Controller controller;
 	
 	String[] columnNames = {"Process name", 
-			"Waiting time",
-			"Calculating time"};
+			"Time", "Priority"};
 	
 	ArrayList<Process> data = new ArrayList<>(
 			Arrays.asList( 
-					new Process("Prozess1", 1, 2), 
-					new Process("Prozess2", 2, 1)
+					new Process("Prozess1", "1", 2), 
+					new Process("Prozess2", "1", 1)
 			)
 			);
 
@@ -46,10 +45,10 @@ public class Model extends AbstractTableModel {
 					value = data.get(row).getpName();
 					break;
 				case 1:
-					value = data.get(row).getpWaitTime();
+					value = data.get(row).getpTime();
 					break;
 				case 2:
-					value = data.get(row).getpCalcTime();
+					value = data.get(row).getpPrio();
 					break;
 				default:
 					break;
@@ -58,8 +57,7 @@ public class Model extends AbstractTableModel {
 			}
 			
 			Class[] columns = new Class[] {String.class,
-					Integer.class, 
-					Integer.class}; 
+					String.class, Integer.class}; 
 			
 			public Class getColumnClass(int c) {
 				return getValueAt(0, c).getClass();
@@ -75,10 +73,10 @@ public class Model extends AbstractTableModel {
 					data.get(row).setpName((String)value);
 					break;
 				case 1:
-					data.get(row).setpWaitTime((Integer)value);
+					data.get(row).setpTime((String)value);
 					break;
 				case 2:
-					data.get(row).setpCalcTime((Integer)value);
+					data.get(row).setpPrio((Integer)value);
 					break;
 				default:
 					break;
@@ -86,16 +84,16 @@ public class Model extends AbstractTableModel {
 		        fireTableCellUpdated(row, col);
 			}
 			
-			public void addElements() {
-				data.add(new Process("Prozess32", getRowCount(), getColumnCount()));
-			}
-			
 			public ArrayList<Process> getData() {
 				return data;
 			}
 			
+			public String[] getColumnNames() {
+				return columnNames;
+			}
+
 			public void appendEmptyRow() {
-				data.add(new Process("", 1, 1));
+				data.add(new Process("", "", 1));
 				int count = getRowCount();
 				fireTableRowsInserted(count-1, count-1); 
 			}
@@ -105,5 +103,4 @@ public class Model extends AbstractTableModel {
 				int count = getRowCount();
 				fireTableRowsDeleted(count-1, count-1);
 			}
-
 }

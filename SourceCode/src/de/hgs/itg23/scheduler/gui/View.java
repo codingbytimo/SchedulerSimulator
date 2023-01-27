@@ -35,6 +35,9 @@ public class View extends JFrame {
 	private JTable table;
 	private JButton btnNewProcess;
 	private JButton btnRemoveProcess;
+	private JScrollPane scrollPane;
+	
+	private Model model;
 	
 	
 	public View() {
@@ -71,9 +74,9 @@ public class View extends JFrame {
 	    btnRun.setBounds(10, 11, 89, 23);
 	    panelSim.add(btnRun);
 	    
-	    JTextPane textPane = new JTextPane();
-	    textPane.setBounds(10, 45, 600, 300);
-	    panelSim.add(textPane);
+	    JScrollPane scrollPane_1 = new JScrollPane();
+	    scrollPane_1.setBounds(10, 45, 650, 300);
+	    panelSim.add(scrollPane_1);
 	    tabbedPane.addTab("Configure", panelConfigure);
 	    panelConfigure.setLayout(null);
 	    
@@ -83,9 +86,11 @@ public class View extends JFrame {
 	    panelConfigure.add(lblAddProcess);
 	    
 	    table = new JTable();
-	    table.setBounds(10, 36, 600, 300);
-	    table.getTableHeader();
-	    panelConfigure.add(table);
+	    table.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
+	    table.getTableHeader().setBackground(Color.ORANGE);
+	    scrollPane = new JScrollPane(table);
+	    scrollPane.setBounds(10, 36, 600, 300);
+	    panelConfigure.add(scrollPane);
 	    
 	    btnNewProcess = new JButton("Add process");
 	    btnNewProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
@@ -119,5 +124,4 @@ public class View extends JFrame {
 	public void setTable(JTable table) {
 		this.table = table;
 	}
-
 }

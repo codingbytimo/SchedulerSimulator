@@ -3,37 +3,45 @@ package de.hgs.itg23.scheduler.model;
 public class Process {
 	
 	private String pName;
-	private int pWaitTime;
-	private int pCalcTime;
+	private String pTime;
+	private int pPrio;
 	
 	public String getpName() {
 		return pName;
 	}
-
+	
 	public void setpName(String pName) {
 		this.pName = pName;
 	}
 
-	public int getpWaitTime() {
-		return pWaitTime;
+	public int getpPrio() {
+		return pPrio;
 	}
 
-	public void setpWaitTime(int pWaitTime) {
-		this.pWaitTime = pWaitTime;
+	public String getpTime() {
+		return pTime;
 	}
 
-	public int getpCalcTime() {
-		return pCalcTime;
+	public void setpTime(String pTime) {
+		this.pTime = pTime;
 	}
 
-	public void setpCalcTime(int pCalcTime) {
-		this.pCalcTime = pCalcTime;
+	public void setpPrio(int pPrio) {
+		if(pPrio >= 12) {
+			this.pPrio = 12;
+		}
+		else if (pPrio <= 1) {
+			this.pPrio = 1;
+		}
+		else {
+			this.pPrio = pPrio;
+		}
 	}
 
-	public Process(String pName, int pWaitTime, int pCalcTime) {
+	public Process(String pName, String pTime, int pPrio) {
 		this.pName = pName;
-		this.pWaitTime = pWaitTime;
-		this.pCalcTime = pCalcTime;
+		this.pTime = pTime;
+		this.pPrio = pPrio;
 	}
 	
 }

@@ -15,9 +15,9 @@ public class Controller {
 	  initView();
 	}
 
-	public void initView() { 
+	public void initView() {
 		view.getTable().setModel(model);
-	} 
+	}
 
 	public void initController() { 
 		view.getBtnNewProcess().addActionListener(e -> appendEmptyRow(e));
