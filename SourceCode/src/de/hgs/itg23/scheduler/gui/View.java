@@ -36,6 +36,7 @@ public class View extends JFrame {
 	private JButton btnNewProcess;
 	private JButton btnRemoveProcess;
 	private JScrollPane scrollPane;
+	private JButton btnRun;
 	
 	private Model model;
 	
@@ -53,7 +54,7 @@ public class View extends JFrame {
 		panelSim = new JPanel();
 		panelConfigure = new JPanel();
 		
-		NumberFormat format = NumberFormat.getInstance();
+		/*NumberFormat format = NumberFormat.getInstance();
 	    NumberFormatter formatter = new NumberFormatter(format) {
 	    	@Override
 	        public Object stringToValue(String text) throws ParseException {
@@ -65,12 +66,12 @@ public class View extends JFrame {
 	    formatter.setValueClass(Integer.class);
 	    formatter.setMinimum(0);
 	    formatter.setMaximum(Integer.MAX_VALUE);
-	    formatter.setAllowsInvalid(false);
+	    formatter.setAllowsInvalid(false);*/
 		
 	    tabbedPane.addTab("Sim", panelSim);
 	    panelSim.setLayout(null);
 	    
-	    JButton btnRun = new JButton("Run");
+	    btnRun = new JButton("Run");
 	    btnRun.setBounds(10, 11, 89, 23);
 	    panelSim.add(btnRun);
 	    
@@ -103,6 +104,11 @@ public class View extends JFrame {
 	    panelConfigure.add(btnRemoveProcess);
 	    
 		
+	}
+
+
+	public JButton getBtnRun() {
+		return btnRun;
 	}
 
 

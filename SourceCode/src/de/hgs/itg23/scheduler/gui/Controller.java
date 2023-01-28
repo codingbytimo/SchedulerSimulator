@@ -10,10 +10,11 @@ public class Controller {
 	private View view;
 	private Scheduler scheduler;
 	
-	public Controller(Model m, View v) { 
+	public Controller(Model m, View v, Scheduler s) { 
 
 	  model = m;
 	  view = v;
+	  scheduler = s;
 
 	  initView();
 	}
@@ -25,6 +26,7 @@ public class Controller {
 	public void initController() { 
 		view.getBtnNewProcess().addActionListener(e -> appendEmptyRow(e));
 		view.getBtnRemoveProcess().addActionListener(e -> deleteRow(e));
+		view.getBtnRun().addActionListener(e -> startScheduling(e));
 	}
 	
 	private void appendEmptyRow(ActionEvent e) { 
@@ -39,5 +41,10 @@ public class Controller {
 	private void deleteRow(ActionEvent e) { 
 		  int row = view.getTable().getSelectedRow(); 
 		  this.model.deleteRow(row);
+	}
+	
+	private void startScheduling(ActionEvent e) {
+		this.scheduler.startScheduling();
+		
 	}
 }

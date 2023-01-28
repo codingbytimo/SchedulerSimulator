@@ -5,6 +5,7 @@ public class Process {
 	private String pName;
 	private String pTime;
 	private int pPrio;
+	private ProcessState pState;
 	
 	public String getpName() {
 		return pName;
@@ -37,11 +38,16 @@ public class Process {
 			this.pPrio = pPrio;
 		}
 	}
+	
+	public ProcessState getState() {
+		return pState;
+	}
 
 	public Process(String pName, String pTime, int pPrio) {
 		this.pName = pName;
 		this.pTime = pTime;
 		this.pPrio = pPrio;
+		this.pState = ProcessState.waiting;
 	}
 	
 }

@@ -8,7 +8,8 @@ public class App {
 		
 		Model m = new Model();
 		View v = new View();
-		Controller c = new Controller(m, v);
+		Scheduler s = new Scheduler(m);
+		Controller c = new Controller(m, v, s);
 		v.setVisible(true);
 		c.initController();
 	}
