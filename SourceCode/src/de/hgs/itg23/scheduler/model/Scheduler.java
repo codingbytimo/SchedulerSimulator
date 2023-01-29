@@ -15,6 +15,8 @@ public class Scheduler {
 	int[] pPrio = new int[m.getRowCount()];
 	ArrayList<Process> processes = m.getData();
 	private Process cacheProcess;
+	private String cacheTime;
+	String[] singleTime;
 	
 	public String[] getName() {
 		for(int i = 0; i <= m.getRowCount(); i++) {
@@ -43,15 +45,18 @@ public class Scheduler {
 		cacheProcess = processes.get(0);
 		if(processes.get(0).getpPrio() > 1) {
 			System.out.println("------------");
+			cacheProcess.setState(ProcessState.calcRunning);
 			cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
+			cacheProcess.setState(ProcessState.calcReady);
 		}
-		else {
+		else { // if all processes have the priority 1, this will fire
 			System.out.println("Alles EINS");
 		}
 	}
 	
-	public void splitTime() {
-		
+	public void splitTime(Process p) {
+		cacheTime = p.getpTime();
+		singleTime = cacheTime.split(";");
 	}
 	
 	public Scheduler(Model model) {

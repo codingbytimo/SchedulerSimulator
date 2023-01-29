@@ -42,12 +42,16 @@ public class Process {
 	public ProcessState getState() {
 		return pState;
 	}
+	
+	public void setState(ProcessState state) {
+		pState = state;
+	}
 
 	public Process(String pName, String pTime, int pPrio) {
 		this.pName = pName;
 		this.pTime = pTime;
 		this.pPrio = pPrio;
-		this.pState = ProcessState.waiting;
+		this.pState = ProcessState.calcReady;
 	}
 	
 }
