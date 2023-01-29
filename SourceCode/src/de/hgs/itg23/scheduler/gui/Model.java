@@ -94,7 +94,7 @@ public class Model extends AbstractTableModel {
 			}
 
 			public void appendEmptyRow() {
-				data.add(new Process("", "", 1));
+				data.add(new Process("PROZESS", "Zeit;Zeit", 1));
 				int count = getRowCount();
 				fireTableRowsInserted(count-1, count-1); 
 			}

@@ -2,6 +2,7 @@ package de.hgs.itg23.scheduler.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JOptionPane;
 import de.hgs.itg23.scheduler.gui.Model;
 
 public class Scheduler {
@@ -51,16 +52,27 @@ public class Scheduler {
 		}
 		else { // if all processes have the priority 1, this will fire
 			System.out.println("Alles EINS");
+			cacheProcess.setState(ProcessState.finished);
+			if(processes.size() > 1) {
+				m.deleteRow(0);
+			}
+			else {
+				m.appendEmptyRow();
+				m.deleteRow(0);
+				JOptionPane.showMessageDialog(null, "Fertig.");
+			}
 		}
 	}
 	
 	public void splitTime(Process p) {
 		cacheTime = p.getpTime();
 		singleTime = cacheTime.split(";");
+		
 	}
 	
 	public Scheduler(Model model) {
 		m = model;
+		
 	}
 	
 	public void printProccessList(ArrayList<Process> pList) {

@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JTextPane;
+import javax.swing.table.DefaultTableModel;
 
 public class View extends JFrame {
 	
@@ -42,7 +43,6 @@ public class View extends JFrame {
 	
 	
 	public View() {
-		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(800, 450);
 		setTitle("Scheduler von Timo");
@@ -75,9 +75,11 @@ public class View extends JFrame {
 	    btnRun.setBounds(10, 11, 89, 23);
 	    panelSim.add(btnRun);
 	    
-	    JScrollPane scrollPane_1 = new JScrollPane();
+	    JTable simTable = new JTable();
+	    JScrollPane scrollPane_1 = new JScrollPane(simTable);
 	    scrollPane_1.setBounds(10, 45, 650, 300);
 	    panelSim.add(scrollPane_1);
+	    
 	    tabbedPane.addTab("Configure", panelConfigure);
 	    panelConfigure.setLayout(null);
 	    

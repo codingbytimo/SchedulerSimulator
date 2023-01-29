@@ -2,6 +2,8 @@ package de.hgs.itg23.scheduler.gui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
 import de.hgs.itg23.scheduler.model.Scheduler;
 
 public class Controller {
@@ -45,6 +47,6 @@ public class Controller {
 	
 	private void startScheduling(ActionEvent e) {
 		this.scheduler.startScheduling();
-		
 	}
+	
 }
