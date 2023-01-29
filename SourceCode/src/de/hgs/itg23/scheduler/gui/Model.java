@@ -18,9 +18,9 @@ public class Model extends AbstractTableModel {
 	
 	ArrayList<Process> data = new ArrayList<>(
 			Arrays.asList( 
-					new Process("A", "1", 10), 
-					new Process("B", "1", 8),
-					new Process("C", "1", 9)
+					new Process("A", "1", 3), 
+					new Process("B", "1", 5),
+					new Process("C", "1", 4)
 			)
 			);
 

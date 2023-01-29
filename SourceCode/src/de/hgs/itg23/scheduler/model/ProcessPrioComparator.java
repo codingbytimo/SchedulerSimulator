@@ -6,7 +6,7 @@ public class ProcessPrioComparator implements Comparator<Process>{
 	
 	@Override
     public int compare(Process firstProcess, Process secondProcess) {
-       return Integer.compare(firstProcess.getpPrio(), secondProcess.getpPrio());
+       return Integer.compare(secondProcess.getpPrio(), firstProcess.getpPrio());
     }
 
 }

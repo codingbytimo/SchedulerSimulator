@@ -14,6 +14,7 @@ public class Scheduler {
 	String[] pTime = new String[m.getRowCount()];
 	int[] pPrio = new int[m.getRowCount()];
 	ArrayList<Process> processes = m.getData();
+	private Process cacheProcess;
 	
 	public String[] getName() {
 		for(int i = 0; i <= m.getRowCount(); i++) {
@@ -38,9 +39,15 @@ public class Scheduler {
 	
 	public void startScheduling() {
 		processes = m.getData();
-		printProccessList(processes);
-		Collections.sort(processes, prioComparator);
-		printProccessList(processes);
+		Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
+		cacheProcess = processes.get(0);
+		if(processes.get(0).getpPrio() > 1) {
+			System.out.println("------------");
+			cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
+		}
+		else {
+			System.out.println("Alles EINS");
+		}
 	}
 	
 	public void splitTime() {
