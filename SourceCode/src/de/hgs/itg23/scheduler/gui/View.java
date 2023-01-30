@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
+import java.awt.TextArea;
 
 public class View extends JFrame {
 	
@@ -38,6 +39,7 @@ public class View extends JFrame {
 	private JButton btnRemoveProcess;
 	private JScrollPane scrollPane;
 	private JButton btnRun;
+	private TextArea textArea;
 	
 	private Model model;
 	
@@ -75,10 +77,10 @@ public class View extends JFrame {
 	    btnRun.setBounds(10, 11, 89, 23);
 	    panelSim.add(btnRun);
 	    
-	    JTable simTable = new JTable();
-	    JScrollPane scrollPane_1 = new JScrollPane(simTable);
-	    scrollPane_1.setBounds(10, 45, 650, 300);
-	    panelSim.add(scrollPane_1);
+	    textArea = new TextArea();
+	    textArea.setBounds(10, 40, 700, 325);
+	    textArea.setEditable(false);
+	    panelSim.add(textArea);
 	    
 	    tabbedPane.addTab("Configure", panelConfigure);
 	    panelConfigure.setLayout(null);
@@ -104,8 +106,16 @@ public class View extends JFrame {
 	    btnRemoveProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
 	    btnRemoveProcess.setBounds(170, 347, 150, 23);
 	    panelConfigure.add(btnRemoveProcess);
-	    
-		
+	}
+
+
+	public TextArea getTextArea() {
+		return textArea;
+	}
+
+
+	public void setTextArea(TextArea textArea) {
+		this.textArea = textArea;
 	}
 
 

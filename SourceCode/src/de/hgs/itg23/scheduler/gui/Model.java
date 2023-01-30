@@ -18,14 +18,26 @@ public class Model extends AbstractTableModel {
 	
 	ArrayList<Process> data = new ArrayList<>(
 			Arrays.asList( 
-					new Process("A", "1", 3), 
-					new Process("B", "1", 5),
-					new Process("C", "1", 4)
+					new Process("A", "2;4;6", 3), 
+					new Process("B", "1;2;1;2;1", 5),
+					new Process("C", "2;2;5", 4)
+			)
+			);
+	
+	ArrayList<Process> defaultData = new ArrayList<>(
+			Arrays.asList( 
+					new Process("A", "2;4;6", 3), 
+					new Process("B", "1;2;1;2;1", 5),
+					new Process("C", "2;2;5", 4)
 			)
 			);
 
 			public void setData(ArrayList<Process> data) {
 				this.data = data;
+			}
+			
+			public void setDefaultData() {
+				this.data = defaultData;
 			}
 
 			@Override

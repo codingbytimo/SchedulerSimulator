@@ -51,7 +51,7 @@ public class Process {
 		this.pName = pName;
 		this.pTime = pTime;
 		this.pPrio = pPrio;
-		this.pState = ProcessState.calcReady;
+		this.pState = ProcessState.CALCREADY;
 	}
 	
 }
