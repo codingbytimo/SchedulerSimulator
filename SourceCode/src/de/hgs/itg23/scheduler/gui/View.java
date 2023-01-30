@@ -46,7 +46,8 @@ public class View extends JFrame {
 	
 	public View() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(800, 450);
+		setSize(1000, 550);
+		setResizable(false);
 		setTitle("Scheduler von Timo");
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -55,20 +56,6 @@ public class View extends JFrame {
 		
 		panelSim = new JPanel();
 		panelConfigure = new JPanel();
-		
-		/*NumberFormat format = NumberFormat.getInstance();
-	    NumberFormatter formatter = new NumberFormatter(format) {
-	    	@Override
-	        public Object stringToValue(String text) throws ParseException {
-	            if (text.length() == 0)
-	                return null;
-	            return super.stringToValue(text);
-	        }
-	    };
-	    formatter.setValueClass(Integer.class);
-	    formatter.setMinimum(0);
-	    formatter.setMaximum(Integer.MAX_VALUE);
-	    formatter.setAllowsInvalid(false);*/
 		
 	    tabbedPane.addTab("Sim", panelSim);
 	    panelSim.setLayout(null);

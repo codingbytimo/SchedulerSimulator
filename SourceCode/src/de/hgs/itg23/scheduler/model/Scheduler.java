@@ -21,8 +21,8 @@ public class Scheduler {
 	private Process cacheProcess;
 	private String cacheTime;
 	String[] singleTime;
-	String[] calcTime;
-	String[] waitTime;
+	ArrayList<String> calcTime;
+	ArrayList<String> waitTime;
 	private final static String newline = "\n";
 	
 	public String[] getName() {
@@ -79,17 +79,13 @@ public class Scheduler {
 	public void splitTime(Process p) {
 		cacheTime = p.getpTime();
 		singleTime = cacheTime.split(";");
-		waitTime = new String[singleTime.length];
-		calcTime = new String[singleTime.length];
-		int n = 0;
-		int j = 0;
+		calcTime = new ArrayList<>();
+		waitTime = new ArrayList<>();
 		for(int i = 0; i < singleTime.length; i = i+2) {
-			calcTime[n] = singleTime[i];
-			n++;
+			calcTime.add(singleTime[i]);
 		}
 		for(int i = 1; i < singleTime.length; i = i+2) {
-			waitTime[j] = singleTime[i];
-			j++;
+			waitTime.add(singleTime[i]);
 		}
 		printArrays();
 	}
@@ -122,9 +118,9 @@ public class Scheduler {
 	}
 	
 	private void printArrays() {
-		System.out.println(Arrays.toString(singleTime));
-		System.out.println(Arrays.toString(calcTime));
-		System.out.println(Arrays.toString(waitTime));
+		System.out.println("singleTime Array: " + Arrays.toString(singleTime));
+		System.out.println("calcTime List: " + calcTime);
+		System.out.println("waitTime List: " + waitTime);
 		System.out.println("----------");
 	}
 }
