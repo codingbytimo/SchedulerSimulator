@@ -6,6 +6,24 @@ public class Process {
 	private String pTime;
 	private int pPrio;
 	private ProcessState pState;
+	private int waitIndex = 0;
+	private int calcIndex = 0;
+	
+	public int getWaitIndex() {
+		return waitIndex;
+	}
+
+	public void setWaitIndex(int waitIndex) {
+		this.waitIndex = waitIndex;
+	}
+
+	public int getCalcIndex() {
+		return calcIndex;
+	}
+
+	public void setCalcIndex(int calcIndex) {
+		this.calcIndex = calcIndex;
+	}
 	
 	public String getpName() {
 		return pName;
@@ -31,8 +49,8 @@ public class Process {
 		if(pPrio >= 12) {
 			this.pPrio = 12;
 		}
-		else if (pPrio <= 1) {
-			this.pPrio = 1;
+		else if (pPrio <= 0) {
+			this.pPrio = 0;
 		}
 		else {
 			this.pPrio = pPrio;

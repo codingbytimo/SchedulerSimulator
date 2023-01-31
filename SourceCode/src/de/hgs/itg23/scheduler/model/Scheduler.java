@@ -55,7 +55,7 @@ public class Scheduler {
 		Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
 		cacheProcess = processes.get(0);
 		splitTime(cacheProcess);
-		if(processes.get(0).getpPrio() > 1) {
+		if(cacheProcess.getpPrio() > 1) {
 			cacheProcess.setState(ProcessState.CALCRUNNING);
 			simOutput(cacheProcess, 0);
 			cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
@@ -64,12 +64,13 @@ public class Scheduler {
 		}
 		else { // if all processes have the priority 1, this will fire
 			simOutput(cacheProcess, 2);
+			cacheProcess.setpPrio(cacheProcess.getpPrio() - 1);
 			cacheProcess.setState(ProcessState.FINISHED);
 			if(processes.size() > 1) {
 				m.deleteRow(0);
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Fertig.");
+				JOptionPane.showMessageDialog(null, "Alle Prozesse sind fertig.");
 				v.getTextArea().setText("");
 				m.setDefaultData();
 			}
@@ -104,16 +105,28 @@ public class Scheduler {
 	private void simOutput(Process process, int output) {
 		switch (output) {
 		case 0:
-			v.getTextArea().append(process.getpName() + " rechnet jetzt..." + newline);
+			v.getTextArea().append(process.getpName() + " rechnet für " + (String)calcTime.get(cacheProcess.getCalcIndex()) + " ZE..." + newline);
 			break;
 		case 1:
-			v.getTextArea().append(process.getpName() + " hat fertig gerechnet und wartet." + newline);
+			v.getTextArea().append(process.getpName() + " hat fertig gerechnet und wartet "+ (String)waitTime.get(cacheProcess.getWaitIndex()) + " ZE." + newline);
 			break;
 		case 2:
 			v.getTextArea().append(process.getpName() + " ist komplett fertig." + newline);
 			break;
 		default:
 			break;
+		}
+		if(cacheProcess.getCalcIndex() < calcTime.size()-1) {
+			cacheProcess.setCalcIndex(cacheProcess.getCalcIndex() + 1);
+		}
+		else {
+			cacheProcess.setCalcIndex(0);
+		}
+		if(cacheProcess.getWaitIndex() < waitTime.size()-1) {
+			cacheProcess.setWaitIndex(cacheProcess.getWaitIndex() + 1);
+		}
+		else {
+			cacheProcess.setWaitIndex(0);
 		}
 	}
 	
