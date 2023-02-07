@@ -2,6 +2,6 @@ package de.hgs.itg23.scheduler.model;
 
 public enum ProcessState {
 	
-	CALCRUNNING, CALCREADY, FINISHED;
+	CALCRUNNING, CALCREADY, BLOCKED, FINISHED;
 	
 }

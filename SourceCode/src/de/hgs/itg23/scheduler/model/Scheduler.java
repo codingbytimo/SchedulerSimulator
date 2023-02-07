@@ -21,7 +21,8 @@ public class Scheduler {
 	private Process cacheProcess;
 	private String cacheTime;
 	String[] singleTime;
-	ArrayList<String> calcTime;
+	int[] timesArray;
+	ArrayList<Integer> timesList;
 	ArrayList<String> waitTime;
 	private final static String newline = "\n";
 	
@@ -58,6 +59,12 @@ public class Scheduler {
 		if(cacheProcess.getpPrio() > 1) {
 			cacheProcess.setState(ProcessState.CALCRUNNING);
 			simOutput(cacheProcess, 0);
+			if(timesList.get(0) > 0) {
+				timesList.set(0, timesList.get(0) - 1);
+			}
+			else {
+				timesList.remove(0);
+			}
 			cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
 			cacheProcess.setState(ProcessState.CALCREADY);
 			simOutput(cacheProcess, 1);
@@ -80,14 +87,38 @@ public class Scheduler {
 	public void splitTime(Process p) {
 		cacheTime = p.getpTime();
 		singleTime = cacheTime.split(";");
-		calcTime = new ArrayList<>();
-		waitTime = new ArrayList<>();
+		timesArray = new int[singleTime.length];
+		int index = 0;
+		for(int i = 0;i < singleTime.length;i++)
+		{
+		    try
+		    {
+		        timesArray[index] = Integer.parseInt(singleTime[i]);
+		        index++;
+		    }
+		    catch (NumberFormatException nfe)
+		    {
+		        //Do nothing or you could print error if you want
+		    	System.out.println("Wrong input for process time!");
+		    }
+		}
+		// Now there will be a number of 'invalid' elements 
+		// at the end which will need to be trimmed
+		timesArray = Arrays.copyOf(timesArray, index);
+		
+		timesList = new ArrayList<Integer>(timesArray.length);
+		for(int k : timesArray) {
+			timesList.add(k);
+		}
+		
+		//timesArray = Arrays.stream(cacheTime.split(";")).mapToInt(Integer::parseInt).toArray();
+		/*waitTime = new ArrayList<>();
 		for(int i = 0; i < singleTime.length; i = i+2) {
-			calcTime.add(singleTime[i]);
+			times.add(singleTime[i]);
 		}
 		for(int i = 1; i < singleTime.length; i = i+2) {
 			waitTime.add(singleTime[i]);
-		}
+		}*/
 		printArrays();
 	}
 	
@@ -105,10 +136,10 @@ public class Scheduler {
 	private void simOutput(Process process, int output) {
 		switch (output) {
 		case 0:
-			v.getTextArea().append(process.getpName() + " rechnet für " + (String)calcTime.get(cacheProcess.getCalcIndex()) + " ZE..." + newline);
+			v.getTextArea().append(process.getpName() + " rechnet fuer " + timesList.get(0) + " ZE..." + newline);
 			break;
 		case 1:
-			v.getTextArea().append(process.getpName() + " hat fertig gerechnet und wartet "+ (String)waitTime.get(cacheProcess.getWaitIndex()) + " ZE." + newline);
+			v.getTextArea().append(process.getpName() + " hat fertig gerechnet." + newline);
 			break;
 		case 2:
 			v.getTextArea().append(process.getpName() + " ist komplett fertig." + newline);
@@ -116,7 +147,7 @@ public class Scheduler {
 		default:
 			break;
 		}
-		if(cacheProcess.getCalcIndex() < calcTime.size()-1) {
+		/*if(cacheProcess.getCalcIndex() < times.size()-1) {
 			cacheProcess.setCalcIndex(cacheProcess.getCalcIndex() + 1);
 		}
 		else {
@@ -127,13 +158,17 @@ public class Scheduler {
 		}
 		else {
 			cacheProcess.setWaitIndex(0);
-		}
+		}*/
+	}
+	
+	private void convertArrayToArrayList(int[] array) {
+		
 	}
 	
 	private void printArrays() {
-		System.out.println("singleTime Array: " + Arrays.toString(singleTime));
-		System.out.println("calcTime List: " + calcTime);
-		System.out.println("waitTime List: " + waitTime);
+		//System.out.println("singleTime Array: " + Arrays.toString(singleTime));
+		System.out.println("time List: " + timesList);
+		//System.out.println("waitTime List: " + waitTime);
 		System.out.println("----------");
 	}
 }

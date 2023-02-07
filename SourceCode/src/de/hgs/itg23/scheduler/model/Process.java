@@ -6,7 +6,7 @@ public class Process {
 	private String pTime;
 	private int pPrio;
 	private ProcessState pState;
-	private int waitIndex = 0;
+	/*private int waitIndex = 0;
 	private int calcIndex = 0;
 	
 	public int getWaitIndex() {
@@ -23,7 +23,7 @@ public class Process {
 
 	public void setCalcIndex(int calcIndex) {
 		this.calcIndex = calcIndex;
-	}
+	}*/
 	
 	public String getpName() {
 		return pName;
@@ -46,8 +46,8 @@ public class Process {
 	}
 
 	public void setpPrio(int pPrio) {
-		if(pPrio >= 12) {
-			this.pPrio = 12;
+		if(pPrio >= 15) {
+			this.pPrio = 15;
 		}
 		else if (pPrio <= 0) {
 			this.pPrio = 0;
