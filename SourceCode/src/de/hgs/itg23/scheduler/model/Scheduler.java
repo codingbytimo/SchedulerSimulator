@@ -19,9 +19,6 @@ public class Scheduler {
 	int[] pPrio = new int[m.getRowCount()];
 	ArrayList<Process> processes = m.getData();
 	private Process cacheProcess;
-	private String cacheTime;
-	String[] singleTime;
-	int[] timesArray;
 	ArrayList<Integer> timesList;
 	ArrayList<String> waitTime;
 	private final static String newline = "\n";
@@ -55,18 +52,18 @@ public class Scheduler {
 		processes = m.getData();
 		Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
 		cacheProcess = processes.get(0);
-		splitTime(cacheProcess);
+		printArrays();
 		if(cacheProcess.getpPrio() > 1) {
-			cacheProcess.setState(ProcessState.CALCRUNNING);
+			cacheProcess.setState(ProcessState.CALC);
 			simOutput(cacheProcess, 0);
-			if(timesList.get(0) > 0) {
-				timesList.set(0, timesList.get(0) - 1);
+			if(cacheProcess.getTimesList().get(0) > 0) {
+				cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 1);
 			}
 			else {
-				timesList.remove(0);
+				cacheProcess.getTimesList().remove(0);
 			}
 			cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
-			cacheProcess.setState(ProcessState.CALCREADY);
+			cacheProcess.setState(ProcessState.WAITING);
 			simOutput(cacheProcess, 1);
 		}
 		else { // if all processes have the priority 1, this will fire
@@ -84,44 +81,6 @@ public class Scheduler {
 		}
 	}
 	
-	public void splitTime(Process p) {
-		cacheTime = p.getpTime();
-		singleTime = cacheTime.split(";");
-		timesArray = new int[singleTime.length];
-		int index = 0;
-		for(int i = 0;i < singleTime.length;i++)
-		{
-		    try
-		    {
-		        timesArray[index] = Integer.parseInt(singleTime[i]);
-		        index++;
-		    }
-		    catch (NumberFormatException nfe)
-		    {
-		        //Do nothing or you could print error if you want
-		    	System.out.println("Wrong input for process time!");
-		    }
-		}
-		// Now there will be a number of 'invalid' elements 
-		// at the end which will need to be trimmed
-		timesArray = Arrays.copyOf(timesArray, index);
-		
-		timesList = new ArrayList<Integer>(timesArray.length);
-		for(int k : timesArray) {
-			timesList.add(k);
-		}
-		
-		//timesArray = Arrays.stream(cacheTime.split(";")).mapToInt(Integer::parseInt).toArray();
-		/*waitTime = new ArrayList<>();
-		for(int i = 0; i < singleTime.length; i = i+2) {
-			times.add(singleTime[i]);
-		}
-		for(int i = 1; i < singleTime.length; i = i+2) {
-			waitTime.add(singleTime[i]);
-		}*/
-		printArrays();
-	}
-	
 	public Scheduler(Model model, View view) {
 		m = model;
 		v = view;
@@ -136,7 +95,7 @@ public class Scheduler {
 	private void simOutput(Process process, int output) {
 		switch (output) {
 		case 0:
-			v.getTextArea().append(process.getpName() + " rechnet fuer " + timesList.get(0) + " ZE..." + newline);
+			v.getTextArea().append(process.getpName() + " rechnet fuer " + cacheProcess.getTimesList().get(0) + " ZE..." + newline);
 			break;
 		case 1:
 			v.getTextArea().append(process.getpName() + " hat fertig gerechnet." + newline);
@@ -161,13 +120,9 @@ public class Scheduler {
 		}*/
 	}
 	
-	private void convertArrayToArrayList(int[] array) {
-		
-	}
-	
 	private void printArrays() {
 		//System.out.println("singleTime Array: " + Arrays.toString(singleTime));
-		System.out.println("time List: " + timesList);
+		System.out.println("time List: " + cacheProcess.getTimesList());
 		//System.out.println("waitTime List: " + waitTime);
 		System.out.println("----------");
 	}
