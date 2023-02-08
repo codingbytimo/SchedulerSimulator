@@ -54,17 +54,22 @@ public class Scheduler {
 		cacheProcess = processes.get(0);
 		printArrays();
 		if(cacheProcess.getpPrio() > 1) {
-			cacheProcess.setState(ProcessState.CALC);
-			simOutput(cacheProcess, 0);
-			if(cacheProcess.getTimesList().get(0) > 0) {
+			if(cacheProcess.getIsCalc()) {
+				cacheProcess.setState(ProcessState.CALC);
+				simOutput(cacheProcess, 0);
+				cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
+			} else {
+				cacheProcess.setState(ProcessState.BLOCKED);
+				simOutput(cacheProcess, 1);
+			}
+			if(cacheProcess.getTimesList().get(0) > 1) {
 				cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 1);
 			}
 			else {
 				cacheProcess.getTimesList().remove(0);
+				cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
 			}
-			cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
 			cacheProcess.setState(ProcessState.WAITING);
-			simOutput(cacheProcess, 1);
 		}
 		else { // if all processes have the priority 1, this will fire
 			simOutput(cacheProcess, 2);
@@ -98,7 +103,7 @@ public class Scheduler {
 			v.getTextArea().append(process.getpName() + " rechnet fuer " + cacheProcess.getTimesList().get(0) + " ZE..." + newline);
 			break;
 		case 1:
-			v.getTextArea().append(process.getpName() + " hat fertig gerechnet." + newline);
+			v.getTextArea().append(process.getpName() + " ist blockiert für " + cacheProcess.getTimesList().get(0) + " ZE..." + newline);
 			break;
 		case 2:
 			v.getTextArea().append(process.getpName() + " ist komplett fertig." + newline);
@@ -122,7 +127,7 @@ public class Scheduler {
 	
 	private void printArrays() {
 		//System.out.println("singleTime Array: " + Arrays.toString(singleTime));
-		System.out.println("time List: " + cacheProcess.getTimesList());
+		System.out.println("time List" + cacheProcess.getpName() + " : " + cacheProcess.getTimesList());
 		//System.out.println("waitTime List: " + waitTime);
 		System.out.println("----------");
 	}

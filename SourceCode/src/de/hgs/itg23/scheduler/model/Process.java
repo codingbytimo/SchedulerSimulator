@@ -10,6 +10,8 @@ public class Process {
 	private int pPrio;
 	private ProcessState pState;
 	private String cacheTime;
+	private boolean isCalc = true;
+
 	String[] singleTime;
 	int[] timesArray;
 	ArrayList<Integer> cacheTimesList;
@@ -45,6 +47,14 @@ public class Process {
 		else {
 			this.pPrio = pPrio;
 		}
+	}
+	
+	public boolean getIsCalc() {
+		return isCalc;
+	}
+
+	public void setIsCalc(boolean pBool) {
+		this.isCalc = pBool;
 	}
 	
 	public ProcessState getState() {
