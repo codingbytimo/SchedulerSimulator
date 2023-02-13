@@ -1,3 +1,3 @@
 # SchedulerSimulator
 
-School exercise with weird requirements
+A graphical representation of a priority scheduler
