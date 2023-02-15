@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.JOptionPane;
-import de.hgs.itg23.scheduler.gui.Model;
+import de.hgs.itg23.scheduler.gui.InputModel;
 import de.hgs.itg23.scheduler.gui.View;
 
 public class Scheduler {
 	
-	Model m = new Model();
+	InputModel m = new InputModel();
 	View v = new View();
 	
 	ProcessPrioComparator prioComparator = new ProcessPrioComparator();
@@ -53,27 +53,8 @@ public class Scheduler {
 		Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
 		cacheProcess = processes.get(0);
 		printArrays();
-		if(cacheProcess.getpPrio() > 1) {
-			if(cacheProcess.getIsCalc()) {
-				cacheProcess.setState(ProcessState.CALC);
-				simOutput(cacheProcess, 0);
-				cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
-			} else {
-				cacheProcess.setState(ProcessState.BLOCKED);
-				simOutput(cacheProcess, 1);
-			}
-			if(cacheProcess.getTimesList().get(0) > 1) {
-				cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 1);
-			}
-			else {
-				cacheProcess.getTimesList().remove(0);
-				cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
-			}
-			cacheProcess.setState(ProcessState.WAITING);
-		}
-		else { // if all processes have the priority 1, this will fire
+		if(cacheProcess.getTimesList().isEmpty()) {
 			simOutput(cacheProcess, 2);
-			cacheProcess.setpPrio(cacheProcess.getpPrio() - 1);
 			cacheProcess.setState(ProcessState.FINISHED);
 			if(processes.size() > 1) {
 				m.deleteRow(0);
@@ -84,9 +65,32 @@ public class Scheduler {
 				m.setDefaultData();
 			}
 		}
+		else {
+			if(cacheProcess.getIsCalc()) {
+				cacheProcess.setState(ProcessState.CALC);
+				simOutput(cacheProcess, 0);
+				if(cacheProcess.getpPrio() > 1) {
+					cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
+				}
+				else {
+					cacheProcess.setpPrio(0);
+				}
+			} else {
+				cacheProcess.setState(ProcessState.BLOCKED);
+					simOutput(cacheProcess, 1);
+			}
+			if(cacheProcess.getTimesList().get(0) > 1) {
+				cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 1);
+			}
+			else {
+				cacheProcess.getTimesList().remove(0);
+				cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
+			}
+			cacheProcess.setState(ProcessState.WAITING);
+		}
 	}
 	
-	public Scheduler(Model model, View view) {
+	public Scheduler(InputModel model, View view) {
 		m = model;
 		v = view;
 	}

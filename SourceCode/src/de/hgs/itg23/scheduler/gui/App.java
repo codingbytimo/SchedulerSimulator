@@ -6,10 +6,11 @@ public class App {
 
 	public static void main(String[] args) {
 		
-		Model m = new Model();
+		InputModel inputModel = new InputModel();
 		View v = new View();
-		Scheduler s = new Scheduler(m, v);
-		Controller c = new Controller(m, v, s);
+		Scheduler s = new Scheduler(inputModel, v);
+		OutputModel outputModel = new OutputModel(inputModel, s);
+		Controller c = new Controller(inputModel, v, s);
 		v.setVisible(true);
 		c.initController();
 	}

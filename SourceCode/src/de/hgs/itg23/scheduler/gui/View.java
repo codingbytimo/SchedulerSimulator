@@ -25,6 +25,7 @@ import java.awt.Font;
 import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.TextArea;
+import java.awt.ScrollPane;
 
 public class View extends JFrame {
 	
@@ -38,15 +39,16 @@ public class View extends JFrame {
 	private JButton btnNewProcess;
 	private JButton btnRemoveProcess;
 	private JScrollPane scrollPane;
+	private JScrollPane scrollPane1;
 	private JButton btnRun;
 	private TextArea textArea;
 	
-	private Model model;
+	private InputModel model;
 	
 	
 	public View() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1000, 550);
+		setSize(1000, 600);
 		setResizable(false);
 		setTitle("Scheduler von Timo");
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -65,9 +67,13 @@ public class View extends JFrame {
 	    panelSim.add(btnRun);
 	    
 	    textArea = new TextArea();
-	    textArea.setBounds(10, 40, 700, 325);
+	    textArea.setBounds(10, 40, 300, 400);
 	    textArea.setEditable(false);
 	    panelSim.add(textArea);
+	    
+	    scrollPane1 = new JScrollPane();
+	    scrollPane1.setBounds(316, 40, 650, 400);
+	    panelSim.add(scrollPane1);
 	    
 	    tabbedPane.addTab("Configure", panelConfigure);
 	    panelConfigure.setLayout(null);

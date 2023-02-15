@@ -8,11 +8,11 @@ import de.hgs.itg23.scheduler.model.Scheduler;
 
 public class Controller {
 	
-	private Model model; 
+	private InputModel model; 
 	private View view;
 	private Scheduler scheduler;
 	
-	public Controller(Model m, View v, Scheduler s) { 
+	public Controller(InputModel m, View v, Scheduler s) { 
 
 	  model = m;
 	  view = v;
