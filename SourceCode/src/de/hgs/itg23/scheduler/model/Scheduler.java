@@ -3,6 +3,9 @@ package de.hgs.itg23.scheduler.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+
+import javax.security.auth.x500.X500Principal;
 import javax.swing.JOptionPane;
 import de.hgs.itg23.scheduler.gui.InputModel;
 import de.hgs.itg23.scheduler.gui.View;
@@ -75,18 +78,43 @@ public class Scheduler {
 				else {
 					cacheProcess.setpPrio(0);
 				}
-			} else {
+				if(cacheProcess.getTimesList().get(0) > 5) {
+					cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 5);
+				}
+				else {
+					cacheProcess.getTimesList().remove(0);
+					cacheProcess.setState(ProcessState.BLOCKED);
+					cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
+				}
+			} 
+			else {
 				cacheProcess.setState(ProcessState.BLOCKED);
 					simOutput(cacheProcess, 1);
+					cacheProcess.getTimesList().remove(0);
+					cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
+					cacheProcess.setState(ProcessState.WAITING);
 			}
-			if(cacheProcess.getTimesList().get(0) > 1) {
+			for(int p = 1; p < processes.size(); p++) {
+				switch (processes.get(p).getState()) {
+				case WAITING:
+					simOutput(processes.get(p), 3);
+					break;
+				case BLOCKED:
+					simOutput(processes.get(p), 1);
+					processes.get(p).getTimesList().remove(0);
+					processes.get(p).setIsCalc(!processes.get(p).getIsCalc());
+					break;
+				default:
+					break;
+				}
+			}
+			/*if(cacheProcess.getTimesList().get(0) > 1) {
 				cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 1);
 			}
 			else {
 				cacheProcess.getTimesList().remove(0);
 				cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
-			}
-			cacheProcess.setState(ProcessState.WAITING);
+			}*/
 		}
 	}
 	
@@ -104,13 +132,16 @@ public class Scheduler {
 	private void simOutput(Process process, int output) {
 		switch (output) {
 		case 0:
-			v.getTextArea().append(process.getpName() + " rechnet fuer " + cacheProcess.getTimesList().get(0) + " ZE..." + newline);
+			v.getTextArea().append(process.getpName() + " rechnet fuer " + process.getTimesList().get(0) + " ZE..." + newline);
 			break;
 		case 1:
-			v.getTextArea().append(process.getpName() + " ist blockiert für " + cacheProcess.getTimesList().get(0) + " ZE..." + newline);
+			v.getTextArea().append(process.getpName() + " ist blockiert für " + process.getTimesList().get(0) + " ZE..." + newline);
 			break;
 		case 2:
 			v.getTextArea().append(process.getpName() + " ist komplett fertig." + newline);
+			break;
+		case 3:
+			v.getTextArea().append(process.getpName() + " wartet." + newline);
 			break;
 		default:
 			break;

@@ -65,6 +65,30 @@ public class Process {
 		pState = state;
 	}
 	
+	public void calculate() {
+		if(this.timesList.get(0) != 0) {
+			this.timesList.set(0, this.timesList.get(0) - 1);
+			this.pState = ProcessState.CALC;
+		}
+		else {
+			this.timesList.remove(0);
+			setpPrio(pPrio - 2);
+			this.pState = ProcessState.WAITING;
+		}
+	}
+	
+	public void beBlocked() {
+		if(this.timesList.get(0) != 0) {
+			this.timesList.set(0, this.timesList.get(0) - 1);
+			this.pState = ProcessState.BLOCKED;
+		}
+		else {
+			this.timesList.remove(0);
+			setpPrio(pPrio - 2);
+			this.pState = ProcessState.WAITING;
+		}
+	}
+	
 	public ArrayList<Integer> splitTime() {
 		cacheTime = getpTime();
 		singleTime = cacheTime.split(";");
