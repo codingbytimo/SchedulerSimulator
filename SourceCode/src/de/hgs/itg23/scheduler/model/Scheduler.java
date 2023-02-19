@@ -60,7 +60,7 @@ public class Scheduler {
 			simOutput(cacheProcess, 2);
 			cacheProcess.setState(ProcessState.FINISHED);
 			if(processes.size() > 1) {
-				m.deleteRow(0);
+				processes.remove(0);
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "Alle Prozesse sind fertig.");
@@ -95,17 +95,20 @@ public class Scheduler {
 					cacheProcess.setState(ProcessState.WAITING);
 			}
 			for(int p = 1; p < processes.size(); p++) {
-				switch (processes.get(p).getState()) {
-				case WAITING:
+				if(!processes.get(p).getIsCalc()) {
+					if(processes.get(p).getTimesList().isEmpty()) {
+						simOutput(processes.get(p), 2);
+						processes.get(p).setState(ProcessState.FINISHED);
+						processes.remove(p);
+					}
+					else {
+						simOutput(processes.get(p), 1);
+						processes.get(p).getTimesList().remove(0);
+						processes.get(p).setIsCalc(!processes.get(p).getIsCalc());
+					}
+				}
+				else {
 					simOutput(processes.get(p), 3);
-					break;
-				case BLOCKED:
-					simOutput(processes.get(p), 1);
-					processes.get(p).getTimesList().remove(0);
-					processes.get(p).setIsCalc(!processes.get(p).getIsCalc());
-					break;
-				default:
-					break;
 				}
 			}
 			/*if(cacheProcess.getTimesList().get(0) > 1) {
@@ -116,6 +119,7 @@ public class Scheduler {
 				cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
 			}*/
 		}
+		
 	}
 	
 	public Scheduler(InputModel model, View view) {
@@ -146,18 +150,7 @@ public class Scheduler {
 		default:
 			break;
 		}
-		/*if(cacheProcess.getCalcIndex() < times.size()-1) {
-			cacheProcess.setCalcIndex(cacheProcess.getCalcIndex() + 1);
-		}
-		else {
-			cacheProcess.setCalcIndex(0);
-		}
-		if(cacheProcess.getWaitIndex() < waitTime.size()-1) {
-			cacheProcess.setWaitIndex(cacheProcess.getWaitIndex() + 1);
-		}
-		else {
-			cacheProcess.setWaitIndex(0);
-		}*/
+		
 	}
 	
 	private void printArrays() {
