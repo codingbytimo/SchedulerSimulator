@@ -1,19 +1,30 @@
 package de.hgs.itg23.scheduler.gui;
 
-import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
 
-import de.hgs.itg23.scheduler.model.Scheduler;
+import javax.swing.table.AbstractTableModel;
 
 public class OutputModel extends AbstractTableModel {
 	
-	private InputModel m;
-	private Scheduler s;
-	int clock;
+	ArrayList<String> outputList = new ArrayList<>();
+	
+	public void setData(ArrayList<String> data) {
+		outputList.add("Test");
+		this.outputList = data;
+	}
+
+	public ArrayList<String> getOutputList() {
+		return outputList;
+	}
+
+	public void setOutputList(ArrayList<String> outputList) {
+		this.outputList = outputList;
+	}
 
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
-		return m.getData().size();
+		return outputList.size();
 		//return v.getTable().getRowCount()*2;
 	}
 
@@ -23,12 +34,12 @@ public class OutputModel extends AbstractTableModel {
 		return 15;
 	}
 
-	@Override
+	/*@Override
 	public Object getValueAt(int row, int col) {
 		Object value = null;
 		switch (col) {
 		case 0:
-			value = m.getData().get(row).getpName();
+			value = outputList.get(row);
 			break;
 		case 1:
 			value = m.getData().get(row).getpTime();
@@ -40,7 +51,7 @@ public class OutputModel extends AbstractTableModel {
 			break;
 		}
 		return value;
-	}
+	}*/
 	
 	public void setValueAt(Object value, int row, int col) {
 		
@@ -50,9 +61,10 @@ public class OutputModel extends AbstractTableModel {
 		return false;
 	}
 
-	public OutputModel( InputModel m, Scheduler s) {
-		this.m = m;
-		this.s = s;
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

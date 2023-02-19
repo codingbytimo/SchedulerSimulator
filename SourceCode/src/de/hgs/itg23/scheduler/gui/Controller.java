@@ -1,28 +1,44 @@
 package de.hgs.itg23.scheduler.gui;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import de.hgs.itg23.scheduler.model.Scheduler;
 
 public class Controller {
 	
-	private InputModel model; 
+	private InputModel inputModel; 
+	private OutputModel outputModel;
 	private View view;
+	DefaultTableModel dm = new DefaultTableModel(0, 0);
 	private Scheduler scheduler;
 	
-	public Controller(InputModel m, View v, Scheduler s) { 
+	public Controller(InputModel m, OutputModel o, View v, Scheduler s) { 
 
-	  model = m;
+	  inputModel = m;
+	  outputModel = o;
 	  view = v;
 	  scheduler = s;
-
 	  initView();
 	}
 
 	public void initView() {
-		view.getTable().setModel(model);
+		view.getInputTable().setModel(inputModel);
+		changeOutputTable();
+	}
+	
+	public void changeOutputTable() {
+		Vector<String> header = new Vector<>();
+		for(int i = 0; i < inputModel.getData().size(); i++) {
+			header.add(inputModel.getData().get(i).getpName());
+		}
+	    dm.setColumnIdentifiers(header);
+	    view.getOutputTable().setModel(dm);
 	}
 
 	public void initController() { 
@@ -32,17 +48,19 @@ public class Controller {
 	}
 	
 	private void appendEmptyRow(ActionEvent e) { 
-		this.model.appendEmptyRow();
-		int count = view.getTable().getRowCount(); 
-		view.getTable().setRowSelectionInterval(count-1, count-1); 
-		view.getTable().editCellAt(count-1, 0);
-		view.getTable().setSurrendersFocusOnKeystroke(true);
-		view.getTable().getEditorComponent().requestFocus();
+		this.inputModel.appendEmptyRow();
+		int count = view.getInputTable().getRowCount(); 
+		view.getInputTable().setRowSelectionInterval(count-1, count-1); 
+		view.getInputTable().editCellAt(count-1, 0);
+		view.getInputTable().setSurrendersFocusOnKeystroke(true);
+		view.getInputTable().getEditorComponent().requestFocus();
+		changeOutputTable();
 	}
 	
 	private void deleteRow(ActionEvent e) { 
-		  int row = view.getTable().getSelectedRow(); 
-		  this.model.deleteRow(row);
+		  int row = view.getInputTable().getSelectedRow(); 
+		  this.inputModel.deleteRow(row);
+		  changeOutputTable();
 	}
 	
 	private void startScheduling(ActionEvent e) {

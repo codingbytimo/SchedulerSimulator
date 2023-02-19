@@ -35,11 +35,12 @@ public class View extends JFrame {
 	private JPanel panelSim;
 	private JPanel panelConfigure;
 	private JLabel lblAddProcess;
-	private JTable table;
 	private JButton btnNewProcess;
 	private JButton btnRemoveProcess;
-	private JScrollPane scrollPane;
-	private JScrollPane scrollPane1;
+	private JTable inputTable;
+	private JTable outputTable;
+	private JScrollPane scrollPaneInput;
+	private JScrollPane scrollPaneOutput;
 	private JButton btnRun;
 	private TextArea textArea;
 	
@@ -71,9 +72,10 @@ public class View extends JFrame {
 	    textArea.setEditable(false);
 	    panelSim.add(textArea);
 	    
-	    scrollPane1 = new JScrollPane();
-	    scrollPane1.setBounds(316, 40, 650, 400);
-	    panelSim.add(scrollPane1);
+	    outputTable = new JTable();
+	    scrollPaneOutput = new JScrollPane(outputTable);
+	    scrollPaneOutput.setBounds(316, 40, 650, 400);
+	    panelSim.add(scrollPaneOutput);
 	    
 	    tabbedPane.addTab("Configure", panelConfigure);
 	    panelConfigure.setLayout(null);
@@ -83,12 +85,12 @@ public class View extends JFrame {
 	    lblAddProcess.setBounds(10, 11, 300, 14);
 	    panelConfigure.add(lblAddProcess);
 	    
-	    table = new JTable();
-	    table.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
-	    table.getTableHeader().setBackground(Color.ORANGE);
-	    scrollPane = new JScrollPane(table);
-	    scrollPane.setBounds(10, 36, 600, 300);
-	    panelConfigure.add(scrollPane);
+	    inputTable = new JTable();
+	    inputTable.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
+	    inputTable.getTableHeader().setBackground(Color.ORANGE);
+	    scrollPaneInput = new JScrollPane(inputTable);
+	    scrollPaneInput.setBounds(10, 36, 600, 300);
+	    panelConfigure.add(scrollPaneInput);
 	    
 	    btnNewProcess = new JButton("Add process");
 	    btnNewProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
@@ -99,6 +101,16 @@ public class View extends JFrame {
 	    btnRemoveProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
 	    btnRemoveProcess.setBounds(170, 347, 150, 23);
 	    panelConfigure.add(btnRemoveProcess);
+	}
+
+
+	public JTable getOutputTable() {
+		return outputTable;
+	}
+
+
+	public void setOutputTable(JTable outputTable) {
+		this.outputTable = outputTable;
 	}
 
 
@@ -127,12 +139,12 @@ public class View extends JFrame {
 	}
 
 
-	public JTable getTable() {
-		return table;
+	public JTable getInputTable() {
+		return inputTable;
 	}
 
 
-	public void setTable(JTable table) {
-		this.table = table;
+	public void setInputTable(JTable table) {
+		this.inputTable = table;
 	}
 }

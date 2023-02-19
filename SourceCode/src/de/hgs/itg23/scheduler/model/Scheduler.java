@@ -8,11 +8,13 @@ import java.util.Iterator;
 import javax.security.auth.x500.X500Principal;
 import javax.swing.JOptionPane;
 import de.hgs.itg23.scheduler.gui.InputModel;
+import de.hgs.itg23.scheduler.gui.OutputModel;
 import de.hgs.itg23.scheduler.gui.View;
 
 public class Scheduler {
 	
 	InputModel m = new InputModel();
+	OutputModel o = new OutputModel();
 	View v = new View();
 	
 	ProcessPrioComparator prioComparator = new ProcessPrioComparator();
@@ -24,6 +26,7 @@ public class Scheduler {
 	private Process cacheProcess;
 	ArrayList<Integer> timesList;
 	ArrayList<String> waitTime;
+	
 	private final static String newline = "\n";
 	
 	public String[] getName() {
@@ -111,19 +114,14 @@ public class Scheduler {
 					simOutput(processes.get(p), 3);
 				}
 			}
-			/*if(cacheProcess.getTimesList().get(0) > 1) {
-				cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 1);
-			}
-			else {
-				cacheProcess.getTimesList().remove(0);
-				cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
-			}*/
+			
 		}
 		
 	}
 	
-	public Scheduler(InputModel model, View view) {
-		m = model;
+	public Scheduler(InputModel inputModel, OutputModel outputModel, View view) {
+		m = inputModel;
+		o = outputModel;
 		v = view;
 	}
 	
@@ -137,6 +135,7 @@ public class Scheduler {
 		switch (output) {
 		case 0:
 			v.getTextArea().append(process.getpName() + " rechnet fuer " + process.getTimesList().get(0) + " ZE..." + newline);
+			
 			break;
 		case 1:
 			v.getTextArea().append(process.getpName() + " ist blockiert für " + process.getTimesList().get(0) + " ZE..." + newline);
@@ -154,9 +153,8 @@ public class Scheduler {
 	}
 	
 	private void printArrays() {
-		//System.out.println("singleTime Array: " + Arrays.toString(singleTime));
 		System.out.println("time List" + cacheProcess.getpName() + " : " + cacheProcess.getTimesList());
-		//System.out.println("waitTime List: " + waitTime);
 		System.out.println("----------");
 	}
+
 }
