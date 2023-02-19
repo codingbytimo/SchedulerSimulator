@@ -29,16 +29,9 @@ public class Controller {
 
 	public void initView() {
 		view.getInputTable().setModel(inputModel);
-		changeOutputTable();
-	}
-	
-	public void changeOutputTable() {
-		Vector<String> header = new Vector<>();
-		for(int i = 0; i < inputModel.getData().size(); i++) {
-			header.add(inputModel.getData().get(i).getpName());
-		}
-	    dm.setColumnIdentifiers(header);
-	    view.getOutputTable().setModel(dm);
+		outputModel.fillOutputList();
+		System.out.println(outputModel.getOutputList().get(0).size());
+		view.getOutputTable().setModel(outputModel);
 	}
 
 	public void initController() { 
@@ -54,13 +47,11 @@ public class Controller {
 		view.getInputTable().editCellAt(count-1, 0);
 		view.getInputTable().setSurrendersFocusOnKeystroke(true);
 		view.getInputTable().getEditorComponent().requestFocus();
-		changeOutputTable();
 	}
 	
 	private void deleteRow(ActionEvent e) { 
 		  int row = view.getInputTable().getSelectedRow(); 
 		  this.inputModel.deleteRow(row);
-		  changeOutputTable();
 	}
 	
 	private void startScheduling(ActionEvent e) {

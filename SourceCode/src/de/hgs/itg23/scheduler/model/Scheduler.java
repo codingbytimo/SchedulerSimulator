@@ -14,7 +14,7 @@ import de.hgs.itg23.scheduler.gui.View;
 public class Scheduler {
 	
 	InputModel m = new InputModel();
-	OutputModel o = new OutputModel();
+	OutputModel o = new OutputModel(m);
 	View v = new View();
 	
 	ProcessPrioComparator prioComparator = new ProcessPrioComparator();
@@ -23,10 +23,20 @@ public class Scheduler {
 	String[] pTime = new String[m.getRowCount()];
 	int[] pPrio = new int[m.getRowCount()];
 	ArrayList<Process> processes = m.getData();
+	ArrayList<ArrayList<String>> processesOutput = o.getOutputList();
 	private Process cacheProcess;
 	ArrayList<Integer> timesList;
 	ArrayList<String> waitTime;
+	private boolean run = false;
 	
+	public boolean isRun() {
+		return run;
+	}
+
+	public void setRun(boolean run) {
+		this.run = run;
+	}
+
 	private final static String newline = "\n";
 	
 	public String[] getName() {
@@ -55,67 +65,76 @@ public class Scheduler {
 	}
 
 	public void startScheduling() {
+		this.run = true;
 		processes = m.getData();
-		Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
-		cacheProcess = processes.get(0);
-		printArrays();
-		if(cacheProcess.getTimesList().isEmpty()) {
-			simOutput(cacheProcess, 2);
-			cacheProcess.setState(ProcessState.FINISHED);
-			if(processes.size() > 1) {
-				processes.remove(0);
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Alle Prozesse sind fertig.");
-				v.getTextArea().setText("");
-				m.setDefaultData();
-			}
-		}
-		else {
-			if(cacheProcess.getIsCalc()) {
-				cacheProcess.setState(ProcessState.CALC);
-				simOutput(cacheProcess, 0);
-				if(cacheProcess.getpPrio() > 1) {
-					cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
+		processesOutput = o.getOutputList();
+		while(run) {
+			Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
+			cacheProcess = processes.get(0);
+			printArrays();
+			if(cacheProcess.getTimesList().isEmpty()) {
+				simOutput(cacheProcess, 2);
+				cacheProcess.setState(ProcessState.FINISHED);
+				if(processes.size() > 1) {
+					processes.remove(0);
 				}
 				else {
-					cacheProcess.setpPrio(0);
+					JOptionPane.showMessageDialog(null, "Alle Prozesse sind fertig.");
+					v.getTextArea().setText("");
+					m.setDefaultData();
+					this.run = false;
 				}
-				if(cacheProcess.getTimesList().get(0) > 5) {
-					cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 5);
-				}
-				else {
-					cacheProcess.getTimesList().remove(0);
-					cacheProcess.setState(ProcessState.BLOCKED);
-					cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
-				}
-			} 
-			else {
-				cacheProcess.setState(ProcessState.BLOCKED);
-					simOutput(cacheProcess, 1);
-					cacheProcess.getTimesList().remove(0);
-					cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
-					cacheProcess.setState(ProcessState.WAITING);
 			}
-			for(int p = 1; p < processes.size(); p++) {
-				if(!processes.get(p).getIsCalc()) {
-					if(processes.get(p).getTimesList().isEmpty()) {
-						simOutput(processes.get(p), 2);
-						processes.get(p).setState(ProcessState.FINISHED);
-						processes.remove(p);
+			else {
+				if(cacheProcess.getIsCalc()) {
+					cacheProcess.setState(ProcessState.CALC);
+					processesOutput.get(0).add("r");
+					simOutput(cacheProcess, 0);
+					if(cacheProcess.getpPrio() > 1) {
+						cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
 					}
 					else {
-						simOutput(processes.get(p), 1);
-						processes.get(p).getTimesList().remove(0);
-						processes.get(p).setIsCalc(!processes.get(p).getIsCalc());
+						cacheProcess.setpPrio(0);
+					}
+					if(cacheProcess.getTimesList().get(0) > 5) {
+						cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 5);
+					}
+					else {
+						cacheProcess.getTimesList().remove(0);
+						cacheProcess.setState(ProcessState.BLOCKED);
+						cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
+					}
+				} 
+				else {
+					cacheProcess.setState(ProcessState.BLOCKED);
+						simOutput(cacheProcess, 1);
+						cacheProcess.getTimesList().remove(0);
+						cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
+						cacheProcess.setState(ProcessState.WAITING);
+				}
+				for(int p = 1; p < processes.size(); p++) {
+					if(!processes.get(p).getIsCalc()) {
+						if(processes.get(p).getTimesList().isEmpty()) {
+							simOutput(processes.get(p), 2);
+							processes.get(p).setState(ProcessState.FINISHED);
+							processes.remove(p);
+						}
+						else {
+							simOutput(processes.get(p), 1);
+							processesOutput.get(p).add("b");
+							processes.get(p).getTimesList().remove(0);
+							processes.get(p).setIsCalc(!processes.get(p).getIsCalc());
+						}
+					}
+					else {
+						simOutput(processes.get(p), 3);
+						processesOutput.get(p).add("w");
 					}
 				}
-				else {
-					simOutput(processes.get(p), 3);
-				}
+				
 			}
-			
 		}
+		
 		
 	}
 	
@@ -135,10 +154,9 @@ public class Scheduler {
 		switch (output) {
 		case 0:
 			v.getTextArea().append(process.getpName() + " rechnet fuer " + process.getTimesList().get(0) + " ZE..." + newline);
-			
 			break;
 		case 1:
-			v.getTextArea().append(process.getpName() + " ist blockiert für " + process.getTimesList().get(0) + " ZE..." + newline);
+			v.getTextArea().append(process.getpName() + " ist blockiert fuer " + process.getTimesList().get(0) + " ZE..." + newline);
 			break;
 		case 2:
 			v.getTextArea().append(process.getpName() + " ist komplett fertig." + newline);
@@ -155,6 +173,8 @@ public class Scheduler {
 	private void printArrays() {
 		System.out.println("time List" + cacheProcess.getpName() + " : " + cacheProcess.getTimesList());
 		System.out.println("----------");
+		System.out.println(processesOutput);
+		System.out.println("-----//-----");
 	}
 
 }

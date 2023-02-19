@@ -1,24 +1,23 @@
 package de.hgs.itg23.scheduler.gui;
 
 import java.util.ArrayList;
-
 import javax.swing.table.AbstractTableModel;
 
 public class OutputModel extends AbstractTableModel {
 	
-	ArrayList<String> outputList = new ArrayList<>();
+	private InputModel inputModel = new InputModel();
+	//String[][] outputArray = new String[inputModel.getData().size()][];
+	ArrayList<ArrayList<String>> outputList = new ArrayList<>();
+	//ArrayList<String> outputList = new ArrayList<>();
 	
-	public void setData(ArrayList<String> data) {
-		outputList.add("Test");
+	public void fillOutputList() {
+		for(int i = 0; i < inputModel.getData().size(); i++) {
+			outputList.add(new ArrayList<String>());
+		}
+	}
+	
+	public void setData(ArrayList<ArrayList<String>> data) {
 		this.outputList = data;
-	}
-
-	public ArrayList<String> getOutputList() {
-		return outputList;
-	}
-
-	public void setOutputList(ArrayList<String> outputList) {
-		this.outputList = outputList;
 	}
 
 	@Override
@@ -26,6 +25,14 @@ public class OutputModel extends AbstractTableModel {
 		// TODO Auto-generated method stub
 		return outputList.size();
 		//return v.getTable().getRowCount()*2;
+	}
+
+	public ArrayList<ArrayList<String>> getOutputList() {
+		return outputList;
+	}
+
+	public void setOutputList(ArrayList<ArrayList<String>> outputList) {
+		this.outputList = outputList;
 	}
 
 	@Override
@@ -65,6 +72,10 @@ public class OutputModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public OutputModel(InputModel m) {
+		this.inputModel = m;
 	}
 	
 }
