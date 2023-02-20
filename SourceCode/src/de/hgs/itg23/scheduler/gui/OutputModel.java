@@ -7,7 +7,7 @@ public class OutputModel extends AbstractTableModel {
 	
 	private InputModel inputModel = new InputModel();
 	//String[][] outputArray = new String[inputModel.getData().size()][];
-	ArrayList<ArrayList<String>> outputList = new ArrayList<>();
+	ArrayList<ArrayList<String>> outputList;
 	//ArrayList<String> outputList = new ArrayList<>();
 	
 	public void fillOutputList() {

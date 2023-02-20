@@ -16,6 +16,7 @@ public class Process {
 	int[] timesArray;
 	ArrayList<Integer> cacheTimesList;
 	ArrayList<Integer> timesList;
+	ArrayList<String> tickStates;
 	
 	public String getpName() {
 		return pName;
@@ -141,7 +142,16 @@ public class Process {
 		this.pTime = pTime;
 		this.pPrio = pPrio;
 		this.timesList = splitTime();
+		this.tickStates = new ArrayList<>();
 		this.pState = ProcessState.WAITING;
+	}
+
+	public ArrayList<String> getTickStates() {
+		return tickStates;
+	}
+
+	public void setTickStates(ArrayList<String> tickStates) {
+		this.tickStates = tickStates;
 	}
 	
 }

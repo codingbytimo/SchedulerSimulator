@@ -103,7 +103,7 @@ public class InputModel extends AbstractTableModel {
 			}
 
 			public void appendEmptyRow() {
-				data.add(new Process("PROZESS", "Zeit;Zeit", 1));
+				this.data.add(new Process("PROZESS", "1;1;1;1", 1));
 				int count = getRowCount();
 				fireTableRowsInserted(count-1, count-1); 
 			}

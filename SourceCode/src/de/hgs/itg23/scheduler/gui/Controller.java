@@ -29,15 +29,13 @@ public class Controller {
 
 	public void initView() {
 		view.getInputTable().setModel(inputModel);
-		outputModel.fillOutputList();
-		System.out.println(outputModel.getOutputList().get(0).size());
-		view.getOutputTable().setModel(outputModel);
 	}
 
 	public void initController() { 
 		view.getBtnNewProcess().addActionListener(e -> appendEmptyRow(e));
 		view.getBtnRemoveProcess().addActionListener(e -> deleteRow(e));
 		view.getBtnRun().addActionListener(e -> startScheduling(e));
+		view.getBtnResetAll().addActionListener(e -> resetInput(e));
 	}
 	
 	private void appendEmptyRow(ActionEvent e) { 
@@ -56,6 +54,11 @@ public class Controller {
 	
 	private void startScheduling(ActionEvent e) {
 		this.scheduler.startScheduling();
+	}
+	
+	private void resetInput(ActionEvent e) {
+		inputModel.getData().clear();
+		inputModel.setDefaultData();
 	}
 	
 }

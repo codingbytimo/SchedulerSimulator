@@ -38,13 +38,11 @@ public class View extends JFrame {
 	private JButton btnNewProcess;
 	private JButton btnRemoveProcess;
 	private JTable inputTable;
-	private JTable outputTable;
 	private JScrollPane scrollPaneInput;
-	private JScrollPane scrollPaneOutput;
 	private JButton btnRun;
+	private JButton btnResetAll;
 	private TextArea textArea;
-	
-	private InputModel model;
+	private TextArea textAreaStateOutput;
 	
 	
 	public View() {
@@ -72,10 +70,10 @@ public class View extends JFrame {
 	    textArea.setEditable(false);
 	    panelSim.add(textArea);
 	    
-	    outputTable = new JTable();
-	    scrollPaneOutput = new JScrollPane(outputTable);
-	    scrollPaneOutput.setBounds(316, 40, 650, 400);
-	    panelSim.add(scrollPaneOutput);
+	    textAreaStateOutput = new TextArea();
+	    textAreaStateOutput.setEditable(false);
+	    textAreaStateOutput.setBounds(345, 40, 600, 250);
+	    panelSim.add(textAreaStateOutput);
 	    
 	    tabbedPane.addTab("Configure", panelConfigure);
 	    panelConfigure.setLayout(null);
@@ -101,16 +99,25 @@ public class View extends JFrame {
 	    btnRemoveProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
 	    btnRemoveProcess.setBounds(170, 347, 150, 23);
 	    panelConfigure.add(btnRemoveProcess);
+	    
+	    btnResetAll = new JButton("Reset all");
+	    btnResetAll.setFont(new Font("Arial Black", Font.PLAIN, 12));
+	    btnResetAll.setBounds(330, 347, 150, 23);
+	    panelConfigure.add(btnResetAll);
 	}
 
 
-	public JTable getOutputTable() {
-		return outputTable;
+	public TextArea getTextAreaStateOutput() {
+		return textAreaStateOutput;
 	}
 
 
-	public void setOutputTable(JTable outputTable) {
-		this.outputTable = outputTable;
+	public void setTextAreaStateOutput(TextArea textAreaStateOutput) {
+		this.textAreaStateOutput = textAreaStateOutput;
+	}
+
+	public JButton getBtnResetAll() {
+		return btnResetAll;
 	}
 
 
