@@ -184,7 +184,7 @@ public class Scheduler {
 	private void simOutput(Process process, int output) {
 		switch (output) {
 		case 0:
-			v.getTextArea().append(process.getpName() + " rechnet, noch " + process.getTimesList().get(0) + " ZE..." + newline);
+			v.getTextArea().append(process.getpName() + " rechnet, noch " + process.getTimesList().get(0) + " ZE...Die Prioritaet ist: " + process.getpPrio() + newline);
 			break;
 		case 1:
 			v.getTextArea().append(process.getpName() + " ist blockiert fuer noch " + process.getTimesList().get(0) + " ZE..." + newline);
