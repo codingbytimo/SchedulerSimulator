@@ -69,6 +69,8 @@ public class Scheduler {
 	public void startScheduling() {
 		v.getTextArea().setText("");
 		v.getTextAreaStateOutput().setText("");
+		v.getTextAreaStateOutput().setText("r = rechnen; b = blockiert; w = warten");
+		v.getTextAreaStateOutput().append(newline);
 		this.run = true;
 		processes = m.getData();
 		processesOutput = new ArrayList<>(processes.size());
@@ -83,15 +85,16 @@ public class Scheduler {
 		while(run) {
 			Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
 			cacheProcess = processes.get(0);
-			printArrays();
 			// if the processes time list is empty
 			if(cacheProcess.getTimesList().isEmpty()) {
 				simOutput(cacheProcess, 2);
 				cacheProcess.setState(ProcessState.FINISHED);
+				cacheProcess.getTickStates().add("FERTIG");
 				if(processes.size() > 1) {
 					processes.remove(0);
 				}
 				else {
+					// printing of the process states for the different ticks
 					for(int whichList = 0; whichList < processesOutput.size(); whichList++) {
 						v.getTextAreaStateOutput().append(processGetter + " :  ");
 						if(processGetter < processGetterEval) processGetter++;
@@ -152,6 +155,7 @@ public class Scheduler {
 							// if the processes time list is empty
 							if(processes.get(p).getTimesList().isEmpty()) {
 								simOutput(processes.get(p), 2);
+								processes.get(p).getTickStates().add("FERTIG");
 								processes.get(p).setState(ProcessState.FINISHED);
 								processes.remove(p);
 							}
@@ -176,6 +180,8 @@ public class Scheduler {
 						}
 					}
 					else {
+						processes.get(p).getTickStates().add("FERTIG");
+						processes.get(p).setState(ProcessState.FINISHED);
 						processes.remove(p);
 					}
 					
