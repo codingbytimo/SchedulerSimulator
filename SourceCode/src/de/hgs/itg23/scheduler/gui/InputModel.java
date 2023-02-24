@@ -88,10 +88,8 @@ public class InputModel extends AbstractTableModel {
 				case 2:
 					data.get(row).setpPrio((Integer)value);
 					break;
-				default:
-					break;
 				}
-		        fireTableCellUpdated(row, col);
+		        //fireTableCellUpdated(row, col);
 			}
 			
 			public ArrayList<Process> getData() {

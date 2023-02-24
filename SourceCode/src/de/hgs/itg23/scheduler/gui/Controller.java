@@ -58,6 +58,7 @@ public class Controller {
 	
 	private void resetInput(ActionEvent e) {
 		inputModel.getData().clear();
+		inputModel.fireTableDataChanged();
 		inputModel.setDefaultData();
 	}
 	

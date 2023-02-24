@@ -68,6 +68,7 @@ public class Scheduler {
 
 	public void startScheduling() {
 		v.getTextArea().setText("");
+		v.getTextAreaStateOutput().setText("");
 		this.run = true;
 		processes = m.getData();
 		processesOutput = new ArrayList<>(processes.size());
@@ -83,6 +84,7 @@ public class Scheduler {
 			Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
 			cacheProcess = processes.get(0);
 			printArrays();
+			// if the processes time list is empty
 			if(cacheProcess.getTimesList().isEmpty()) {
 				simOutput(cacheProcess, 2);
 				cacheProcess.setState(ProcessState.FINISHED);
@@ -95,17 +97,20 @@ public class Scheduler {
 						if(processGetter < processGetterEval) processGetter++;
 						else processGetter = 1;
 						for(int list = 0; list < processesOutput.get(whichList).size(); list++) {
-							v.getTextAreaStateOutput().append(processesOutput.get(whichList).get(list) + "  |  ");
+							v.getTextAreaStateOutput().append("Tick " + list + ": " + processesOutput.get(whichList).get(list) + " | ");
 						}
 						v.getTextAreaStateOutput().append(newline);
 					}
+					// if there are no processes to schedule anymore
 					processesOutput.clear();
 					JOptionPane.showMessageDialog(null, "Alle Prozesse sind fertig.");
 					m.setDefaultData();
 					this.run = false;
 				}
 			}
+			// if the processes time list has something in it
 			else {
+				// if the process should be calculating
 				if(cacheProcess.getIsCalc()) {
 					cacheProcess.setState(ProcessState.CALC);
 					cacheProcess.getTickStates().add("r");
@@ -124,43 +129,56 @@ public class Scheduler {
 						cacheProcess.setState(ProcessState.BLOCKED);
 						cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
 					}
-				} 
+				}
+				// if the process should be blocked
 				else {
 					cacheProcess.setState(ProcessState.BLOCKED);
-						simOutput(cacheProcess, 1);
-						if(cacheProcess.getTimesList().get(0) > 1) {
-							cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 1);
-						}
-						else {
-							cacheProcess.getTimesList().remove(0);
-							cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
-							cacheProcess.setState(ProcessState.WAITING);
-						}
+					simOutput(cacheProcess, 1);
+					cacheProcess.getTickStates().add("b");
+					if(cacheProcess.getTimesList().get(0) > 1) {
+						cacheProcess.getTimesList().set(0, cacheProcess.getTimesList().get(0) - 1);
+					}
+					else {
+						cacheProcess.getTimesList().remove(0);
+						cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
+						cacheProcess.setState(ProcessState.WAITING);
+					}
 				}
+				// handle the rest of the processes, which are not the cacheprocess
 				for(int p = 1; p < processes.size(); p++) {
-					if(!processes.get(p).getIsCalc()) {
-						if(processes.get(p).getTimesList().isEmpty()) {
-							simOutput(processes.get(p), 2);
-							processes.get(p).setState(ProcessState.FINISHED);
-							processes.remove(p);
-						}
-						else {
-							simOutput(processes.get(p), 1);
-							processes.get(p).getTickStates().add("b");
-							if(processes.get(p).getTimesList().get(0) > 1) {
-								processes.get(p).getTimesList().set(0, processes.get(p).getTimesList().get(0) - 1);
+					if(processes.get(p).getState() != ProcessState.FINISHED) {
+						// output for blocked processes; other processes may be blocked while others are calculating
+						if(!processes.get(p).getIsCalc() && processes.get(p).getState() != ProcessState.FINISHED) {
+							// if the processes time list is empty
+							if(processes.get(p).getTimesList().isEmpty()) {
+								simOutput(processes.get(p), 2);
+								processes.get(p).setState(ProcessState.FINISHED);
+								processes.remove(p);
 							}
+							// if the processes time list has something in it
 							else {
-								processes.get(p).getTimesList().remove(0);
-								processes.get(p).setIsCalc(!processes.get(p).getIsCalc());
-								processes.get(p).setState(ProcessState.WAITING);
+								simOutput(processes.get(p), 1);
+								processes.get(p).getTickStates().add("b");
+								if(processes.get(p).getTimesList().get(0) > 1) {
+									processes.get(p).getTimesList().set(0, processes.get(p).getTimesList().get(0) - 1);
+								}
+								else {
+									processes.get(p).getTimesList().remove(0);
+									processes.get(p).setIsCalc(!processes.get(p).getIsCalc());
+									processes.get(p).setState(ProcessState.WAITING);
+								}
 							}
+						}
+						// output for waiting processes
+						else {
+							simOutput(processes.get(p), 3);
+							processes.get(p).getTickStates().add("w");
 						}
 					}
 					else {
-						simOutput(processes.get(p), 3);
-						processes.get(p).getTickStates().add("w");
+						processes.remove(p);
 					}
+					
 				}
 				v.getTextArea().append("-----//-----");
 				v.getTextArea().append(newline);
