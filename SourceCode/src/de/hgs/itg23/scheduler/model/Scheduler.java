@@ -106,8 +106,9 @@ public class Scheduler {
 					}
 					// if there are no processes to schedule anymore
 					processesOutput.clear();
+					m.getData().clear();
+					m.fireTableDataChanged();
 					JOptionPane.showMessageDialog(null, "Alle Prozesse sind fertig.");
-					m.setDefaultData();
 					this.run = false;
 				}
 			}
