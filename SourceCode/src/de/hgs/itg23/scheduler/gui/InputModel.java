@@ -14,17 +14,9 @@ public class InputModel extends AbstractTableModel {
 	private Controller controller;
 	
 	private final String[] columnNames = new String[] {"Process name", "Time", "Priority"};
-	private final Class[] columns = new Class[] {String.class, String.class, Integer.class}; 
+	private final Class[] columns = new Class[] {String.class, String.class, Integer.class};
 	
 	ArrayList<Process> data = new ArrayList<>(
-			Arrays.asList( 
-					new Process("A", "2;4;6", 3), 
-					new Process("B", "1;2;1;2;1", 5),
-					new Process("C", "2;2;5", 4)
-			)
-			);
-	
-	ArrayList<Process> defaultData = new ArrayList<>(
 			Arrays.asList( 
 					new Process("A", "2;4;6", 3), 
 					new Process("B", "1;2;1;2;1", 5),
@@ -35,14 +27,10 @@ public class InputModel extends AbstractTableModel {
 			public void setData(ArrayList<Process> data) {
 				this.data = data;
 			}
-			
-			public void setDefaultData() {
-				this.data = defaultData;
-			}
 
 			@Override
 			public int getColumnCount() {
-				return columnNames.length;
+				return 3;
 			}
 
 			@Override
@@ -89,7 +77,7 @@ public class InputModel extends AbstractTableModel {
 					data.get(row).setpPrio((Integer)value);
 					break;
 				}
-		        //fireTableCellUpdated(row, col);
+				//fireTableDataChanged();
 			}
 			
 			public ArrayList<Process> getData() {
@@ -101,14 +89,15 @@ public class InputModel extends AbstractTableModel {
 			}
 
 			public void appendEmptyRow() {
-				this.data.add(new Process("PROZESS", "1;1;1;1", 1));
+				data.add(new Process("PROZESS", "1;1;1", 1));
 				int count = getRowCount();
-				fireTableRowsInserted(count-1, count-1); 
+				fireTableRowsInserted(0, count);
 			}
 			
 			public void deleteRow(int rowIndex) {
-				data.remove(rowIndex);
+				data.remove(data.get(rowIndex));
 				int count = getRowCount();
-				fireTableRowsDeleted(count-1, count-1);
+				fireTableRowsDeleted(count, count);
+				fireTableRowsInserted(0, count);
 			}
 }

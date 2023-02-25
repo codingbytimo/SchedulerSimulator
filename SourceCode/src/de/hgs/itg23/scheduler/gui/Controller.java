@@ -1,27 +1,19 @@
 package de.hgs.itg23.scheduler.gui;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Vector;
-
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 import de.hgs.itg23.scheduler.model.Scheduler;
 
 public class Controller {
 	
 	private InputModel inputModel; 
-	private OutputModel outputModel;
 	private View view;
 	DefaultTableModel dm = new DefaultTableModel(0, 0);
 	private Scheduler scheduler;
 	
-	public Controller(InputModel m, OutputModel o, View v, Scheduler s) { 
+	public Controller(InputModel m, View v, Scheduler s) { 
 
 	  inputModel = m;
-	  outputModel = o;
 	  view = v;
 	  scheduler = s;
 	  initView();

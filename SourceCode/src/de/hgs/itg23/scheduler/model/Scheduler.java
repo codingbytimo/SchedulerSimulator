@@ -8,17 +8,13 @@ import java.util.Iterator;
 import javax.security.auth.x500.X500Principal;
 import javax.swing.JOptionPane;
 
-import de.hgs.itg23.scheduler.gui.CustomPanel;
 import de.hgs.itg23.scheduler.gui.InputModel;
-import de.hgs.itg23.scheduler.gui.OutputModel;
 import de.hgs.itg23.scheduler.gui.View;
 
 public class Scheduler {
 	
 	InputModel m = new InputModel();
-	OutputModel o = new OutputModel(m);
 	View v = new View();
-	
 	ProcessPrioComparator prioComparator = new ProcessPrioComparator();
 	
 	String[] pName = new String[m.getRowCount()];
@@ -30,37 +26,8 @@ public class Scheduler {
 	ArrayList<Integer> timesList;
 	ArrayList<String> waitTime;
 	private boolean run = false;
-	
-	public boolean isRun() {
-		return run;
-	}
-
-	public void setRun(boolean run) {
-		this.run = run;
-	}
 
 	private final static String newline = "\n";
-	
-	public String[] getName() {
-		for(int i = 0; i <= m.getRowCount(); i++) {
-			pName[i] = (String)m.getValueAt(0, i);
-		}
-		return pName;
-	}
-	
-	public String[] getTime() {
-		for(int i = 0; i <= m.getRowCount(); i++) {
-			pTime[i] = (String)m.getValueAt(1, i);
-		}
-		return pTime;
-	}
-	
-	public int[] getPrio() {
-		for(int i = 0; i <= m.getRowCount(); i++) {
-			pPrio[i] = (Integer)m.getValueAt(2, i);
-		}
-		return pPrio;
-	}
 	
 	public Process getCacheProcess() {
 		return cacheProcess;
@@ -69,14 +36,19 @@ public class Scheduler {
 	public void startScheduling() {
 		v.getTextArea().setText("");
 		v.getTextAreaStateOutput().setText("");
-		v.getTextAreaStateOutput().setText("r = rechnen; b = blockiert; w = warten");
+		v.getTextAreaStateOutput().setText("Legende: r = rechnen; b = blockiert; w = warten");
 		v.getTextAreaStateOutput().append(newline);
+		v.getTextAreaStateOutput().append(newline);
+		v.getTextArea().append("-----/Takt 0/-----");
+		v.getTextArea().append(newline);
+		int tick = 1;
 		this.run = true;
 		processes = m.getData();
 		processesOutput = new ArrayList<>(processes.size());
 		int processGetterEval = processes.size();
 		int processGetter = 1;
 		for(int k = 0; k < processes.size(); k++) {
+			processes.get(k).setTimesList(processes.get(k).splitTime());
 			processesOutput.add(k, processes.get(k).tickStates);
 			v.getTextAreaStateOutput().append((k + 1) + ". " + "Zustaende Prozess: " + processes.get(k).getpName());
 			v.getTextAreaStateOutput().append(newline);
@@ -187,16 +159,16 @@ public class Scheduler {
 					}
 					
 				}
-				v.getTextArea().append("-----//-----");
+				v.getTextArea().append("-----/Takt " + tick + "/-----");
+				tick++;
 				v.getTextArea().append(newline);
 			}
 		}
 		
 	}
 	
-	public Scheduler(InputModel inputModel, OutputModel outputModel, View view) {
+	public Scheduler(InputModel inputModel, View view) {
 		m = inputModel;
-		o = outputModel;
 		v = view;
 	}
 	
@@ -209,10 +181,12 @@ public class Scheduler {
 	private void simOutput(Process process, int output) {
 		switch (output) {
 		case 0:
-			v.getTextArea().append(process.getpName() + " rechnet, noch " + process.getTimesList().get(0) + " ZE...Die Prioritaet ist: " + process.getpPrio() + newline);
+			//v.getTextArea().append(process.getpName() + " rechnet, noch " + process.getTimesList().get(0) + " ZE...Die Prioritaet ist: " + process.getpPrio() + newline);
+			v.getTextArea().append(process.getpName() + " rechnet." + newline);
 			break;
 		case 1:
-			v.getTextArea().append(process.getpName() + " ist blockiert fuer noch " + process.getTimesList().get(0) + " ZE..." + newline);
+			//v.getTextArea().append(process.getpName() + " ist blockiert fuer noch " + process.getTimesList().get(0) + " ZE..." + newline);
+			v.getTextArea().append(process.getpName() + " ist blockiert." + newline);
 			break;
 		case 2:
 			v.getTextArea().append(process.getpName() + " ist komplett fertig." + newline);

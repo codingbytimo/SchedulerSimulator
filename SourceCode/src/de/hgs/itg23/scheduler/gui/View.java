@@ -72,7 +72,7 @@ public class View extends JFrame {
 	    
 	    textAreaStateOutput = new TextArea();
 	    textAreaStateOutput.setEditable(false);
-	    textAreaStateOutput.setBounds(345, 40, 600, 250);
+	    textAreaStateOutput.setBounds(345, 40, 600, 400);
 	    panelSim.add(textAreaStateOutput);
 	    
 	    tabbedPane.addTab("Configure", panelConfigure);
