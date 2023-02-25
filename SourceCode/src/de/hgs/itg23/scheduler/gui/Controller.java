@@ -12,23 +12,25 @@ public class Controller {
 	DefaultTableModel dm = new DefaultTableModel(0, 0);
 	private Scheduler scheduler;
 	
-	public Controller(InputModel m, View v, Scheduler s) { 
-
+	// Controller Konstruktor
+	public Controller(InputModel m, View v, Scheduler s) {
 	  inputModel = m;
 	  view = v;
 	  scheduler = s;
 	  initView();
 	}
-
+	
+	// initialisierung der GUI
 	public void initView() {
 		view.getInputTable().setModel(inputModel);
 		view.getInputTable().getTableHeader().setBackground(Color.ORANGE);
 		view.getInputTable().getColumnModel().getColumn(0).setHeaderValue("Prozessname");
-		view.getInputTable().getColumnModel().getColumn(1).setHeaderValue("Zeiten");
+		view.getInputTable().getColumnModel().getColumn(1).setHeaderValue("Zeiten (durch ' ; ' trennen)");
 		view.getInputTable().getColumnModel().getColumn(2).setHeaderValue("Prioritaet");
 		view.getInputTable().getTableHeader().resizeAndRepaint();
 	}
-
+	
+	// initialisierung des Controllers (Funktion der Buttons)
 	public void initController() { 
 		view.getBtnNewProcess().addActionListener(e -> appendEmptyRow(e));
 		view.getBtnRemoveProcess().addActionListener(e -> deleteRow(e));
@@ -36,6 +38,7 @@ public class Controller {
 		view.getBtnResetAll().addActionListener(e -> resetInput(e));
 	}
 	
+	// hinzufuegen eines Prozesses in der Input Tabelle
 	private void appendEmptyRow(ActionEvent e) { 
 		this.inputModel.appendEmptyRow();
 		int count = view.getInputTable().getRowCount(); 
@@ -45,15 +48,18 @@ public class Controller {
 		view.getInputTable().getEditorComponent().requestFocus();
 	}
 	
+	// loeschen eines Prozesses in der Input Tabelle
 	private void deleteRow(ActionEvent e) { 
 		  int row = view.getInputTable().getSelectedRow(); 
 		  this.inputModel.deleteRow(row);
 	}
 	
+	// Run Button
 	private void startScheduling(ActionEvent e) {
 		this.scheduler.startScheduling();
 	}
 	
+	// Reset Button
 	private void resetInput(ActionEvent e) {
 		inputModel.getData().clear();
 		inputModel.fireTableDataChanged();

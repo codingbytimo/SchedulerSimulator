@@ -82,13 +82,15 @@ public class InputModel extends AbstractTableModel {
 			public String[] getColumnNames() {
 				return columnNames;
 			}
-
+			
+			// hinzufuegen eines neuen Prozesses
 			public void appendEmptyRow() {
 				data.add(new Process("PROZESS", "1;1;1", 1));
 				int count = getRowCount();
 				fireTableRowsInserted(0, count);
 			}
 			
+			// loeschen eines Prozesses
 			public void deleteRow(int rowIndex) {
 				data.remove(data.get(rowIndex));
 				int count = getRowCount();

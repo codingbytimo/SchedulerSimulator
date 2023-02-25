@@ -25,17 +25,18 @@ public class Scheduler {
 
 	private final static String newline = "\n";
 	
-	public Process getCacheProcess() {
-		return cacheProcess;
+	// Scheduler Konstruktor
+	public Scheduler(InputModel inputModel, View view) {
+		m = inputModel;
+		v = view;
 	}
 
 	public void startScheduling() {
+		// Befehle fuer den Start des Schedulers
 		v.getTextArea().setText("");
-		v.getTextAreaStateOutput().setText("");
-		v.getTextAreaStateOutput().setText("Legende: r = rechnen; b = blockiert; w = warten");
+		v.getTextAreaStateOutput().setText("Uebersicht der Zustaende der Prozesse fuer jeden Takt" + newline + "Legende: r = rechnen; b = blockiert; w = warten" + newline);
 		v.getTextAreaStateOutput().append(newline);
-		v.getTextAreaStateOutput().append(newline);
-		v.getTextArea().append("-----/Takt 0/-----");
+		v.getTextArea().append("Scheduler LOG" + newline + "-----/Takt 0/-----");
 		v.getTextArea().append(newline);
 		int tick = 1;
 		this.run = true;
@@ -50,10 +51,11 @@ public class Scheduler {
 			v.getTextAreaStateOutput().append(newline);
 		}
 		v.getTextAreaStateOutput().append(newline);
+		// Solange der Scheduler laeuft, bleibt das Programm innerhalb dieser Schleife
 		while(run) {
 			Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
 			cacheProcess = processes.get(0);
-			// if the processes time list is empty
+			// falls die Prozessliste leer ist; Passiert auch sobald der Scheduler fertig ist, da Prozesse, sobald sie fertig sind geloescht werden
 			if(cacheProcess.getTimesList().isEmpty()) {
 				simOutput(cacheProcess, 2);
 				cacheProcess.setState(ProcessState.FINISHED);
@@ -62,17 +64,17 @@ public class Scheduler {
 					processes.remove(0);
 				}
 				else {
-					// printing of the process states for the different ticks
+					// Ausgabe der verschiedenen Zustaende fuer jeden Takt
 					for(int whichList = 0; whichList < processesOutput.size(); whichList++) {
 						v.getTextAreaStateOutput().append(processGetter + " :  ");
 						if(processGetter < processGetterEval) processGetter++;
 						else processGetter = 1;
 						for(int list = 0; list < processesOutput.get(whichList).size(); list++) {
-							v.getTextAreaStateOutput().append("Tick " + list + ": " + processesOutput.get(whichList).get(list) + " | ");
+							v.getTextAreaStateOutput().append("Takt " + list + ": " + processesOutput.get(whichList).get(list) + " | ");
 						}
 						v.getTextAreaStateOutput().append(newline);
 					}
-					// if there are no processes to schedule anymore
+					// Wenn der Scheduler komplett fertig ist
 					processesOutput.clear();
 					m.getData().clear();
 					m.fireTableDataChanged();
@@ -80,9 +82,9 @@ public class Scheduler {
 					this.run = false;
 				}
 			}
-			// if the processes time list has something in it
+			// Wenn die Zeitenliste des Prozesses Zeiten enthaelt
 			else {
-				// if the process should be calculating
+				// Wenn der Prozess im Zustand 'Rechnen' ist
 				if(cacheProcess.getIsCalc()) {
 					cacheProcess.setState(ProcessState.CALC);
 					cacheProcess.getTickStates().add("r");
@@ -102,7 +104,7 @@ public class Scheduler {
 						cacheProcess.setIsCalc(!cacheProcess.getIsCalc());
 					}
 				}
-				// if the process should be blocked
+				// Wenn der Prozess im Zustand 'Blockiert' ist
 				else {
 					cacheProcess.setState(ProcessState.BLOCKED);
 					simOutput(cacheProcess, 1);
@@ -116,10 +118,10 @@ public class Scheduler {
 						cacheProcess.setState(ProcessState.WAITING);
 					}
 				}
-				// handle the rest of the processes, which are not the cacheprocess
+				// Was alle anderen Prozesse fuer diesen Takt machen
 				for(int p = 1; p < processes.size(); p++) {
 					if(processes.get(p).getState() != ProcessState.FINISHED) {
-						// output for blocked processes; other processes may be blocked while others are calculating
+						// Ausgabe für blockierte Prozesse; andere Prozesse können blockiert werden, während andere rechnen
 						if(!processes.get(p).getIsCalc() && processes.get(p).getState() != ProcessState.FINISHED) {
 							// if the processes time list is empty
 							if(processes.get(p).getTimesList().isEmpty()) {
@@ -128,7 +130,7 @@ public class Scheduler {
 								processes.get(p).setState(ProcessState.FINISHED);
 								processes.remove(p);
 							}
-							// if the processes time list has something in it
+							// Wenn die Zeitenliste des Prozesses Zeiten enthaelt
 							else {
 								simOutput(processes.get(p), 1);
 								processes.get(p).getTickStates().add("b");
@@ -142,12 +144,13 @@ public class Scheduler {
 								}
 							}
 						}
-						// output for waiting processes
+						// Ausgabe, falls ein Prozess warten muss
 						else {
 							simOutput(processes.get(p), 3);
 							processes.get(p).getTickStates().add("w");
 						}
 					}
+					// Falls der Scheduler bemerkt, dass ein Prozess fertig ist
 					else {
 						processes.get(p).getTickStates().add("FERTIG");
 						processes.get(p).setState(ProcessState.FINISHED);
@@ -155,6 +158,7 @@ public class Scheduler {
 					}
 					
 				}
+				// Befehle fuer die Ausgabe
 				v.getTextArea().append("-----/Takt " + tick + "/-----");
 				tick++;
 				v.getTextArea().append(newline);
@@ -163,24 +167,16 @@ public class Scheduler {
 		
 	}
 	
-	public Scheduler(InputModel inputModel, View view) {
-		m = inputModel;
-		v = view;
-	}
-	
-	public void printProccessList(ArrayList<Process> pList) {
-		for(Process process : pList) {
-			System.out.println(process);
-		}
-	}
-	
+	// Ausgabe Methode fuer den Scheduler LOG/'textArea'
 	private void simOutput(Process process, int output) {
 		switch (output) {
 		case 0:
+			// Alternative Ausgabe mit mehr Info
 			//v.getTextArea().append(process.getpName() + " rechnet, noch " + process.getTimesList().get(0) + " ZE...Die Prioritaet ist: " + process.getpPrio() + newline);
 			v.getTextArea().append(process.getpName() + " rechnet." + newline);
 			break;
 		case 1:
+			// Alternative Ausgabe mit mehr Info
 			//v.getTextArea().append(process.getpName() + " ist blockiert fuer noch " + process.getTimesList().get(0) + " ZE..." + newline);
 			v.getTextArea().append(process.getpName() + " ist blockiert." + newline);
 			break;
@@ -196,11 +192,18 @@ public class Scheduler {
 		
 	}
 	
+	// DEBUG Methoden
 	private void printArrays() {
 		System.out.println("time List" + cacheProcess.getpName() + " : " + cacheProcess.getTimesList());
 		System.out.println("----------");
 		System.out.println(processesOutput);
 		System.out.println("-----//-----");
+	}
+	
+	public void printProccessList(ArrayList<Process> pList) {
+		for(Process process : pList) {
+			System.out.println(process);
+		}
 	}
 
 }

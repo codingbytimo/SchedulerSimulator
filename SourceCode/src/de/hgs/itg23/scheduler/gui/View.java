@@ -29,27 +29,38 @@ import java.awt.ScrollPane;
 
 public class View extends JFrame {
 	
+	// TabbedPane
 	private JTabbedPane tabbedPane;
 	
 	// JPanel Deklaration
 	private JPanel panelSim;
 	private JPanel panelConfigure;
+	
+	// Label
 	private JLabel lblAddProcess;
+	
+	// Buttons
 	private JButton btnNewProcess;
 	private JButton btnRemoveProcess;
-	private JTable inputTable;
-	private JScrollPane scrollPaneInput;
 	private JButton btnRun;
 	private JButton btnResetAll;
+	
+	// Tabelle
+	private JTable inputTable;
+	
+	// ScrollPane
+	private JScrollPane scrollPaneInput;
+	
+	// Text Areas
 	private TextArea textArea;
 	private TextArea textAreaStateOutput;
 	
-	
+	// GUI
 	public View() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1000, 600);
 		setResizable(false);
-		setTitle("Scheduler von Timo");
+		setTitle("Scheduler Simulator von Timo");
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -103,7 +114,8 @@ public class View extends JFrame {
 	    btnResetAll.setBounds(330, 347, 150, 23);
 	    panelConfigure.add(btnResetAll);
 	}
-
+	
+	// Getter und Setter Methoden
 
 	public TextArea getTextAreaStateOutput() {
 		return textAreaStateOutput;
