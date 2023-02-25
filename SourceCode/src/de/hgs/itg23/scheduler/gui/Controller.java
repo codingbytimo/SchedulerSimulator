@@ -1,5 +1,6 @@
 package de.hgs.itg23.scheduler.gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import javax.swing.table.DefaultTableModel;
 import de.hgs.itg23.scheduler.model.Scheduler;
@@ -21,6 +22,11 @@ public class Controller {
 
 	public void initView() {
 		view.getInputTable().setModel(inputModel);
+		view.getInputTable().getTableHeader().setBackground(Color.ORANGE);
+		view.getInputTable().getColumnModel().getColumn(0).setHeaderValue("Prozessname");
+		view.getInputTable().getColumnModel().getColumn(1).setHeaderValue("Zeiten");
+		view.getInputTable().getColumnModel().getColumn(2).setHeaderValue("Prioritaet");
+		view.getInputTable().getTableHeader().resizeAndRepaint();
 	}
 
 	public void initController() { 

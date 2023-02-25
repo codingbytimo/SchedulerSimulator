@@ -8,10 +8,6 @@ import javax.swing.table.AbstractTableModel;
 import de.hgs.itg23.scheduler.model.Process;
 
 public class InputModel extends AbstractTableModel {
-
-	private View view;
-	private Process process;
-	private Controller controller;
 	
 	private final String[] columnNames = new String[] {"Process name", "Time", "Priority"};
 	private final Class[] columns = new Class[] {String.class, String.class, Integer.class};
@@ -77,7 +73,6 @@ public class InputModel extends AbstractTableModel {
 					data.get(row).setpPrio((Integer)value);
 					break;
 				}
-				//fireTableDataChanged();
 			}
 			
 			public ArrayList<Process> getData() {

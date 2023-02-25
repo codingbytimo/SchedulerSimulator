@@ -1,11 +1,7 @@
 package de.hgs.itg23.scheduler.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
-
-import javax.security.auth.x500.X500Principal;
 import javax.swing.JOptionPane;
 
 import de.hgs.itg23.scheduler.gui.InputModel;

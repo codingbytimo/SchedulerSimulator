@@ -58,7 +58,7 @@ public class View extends JFrame {
 		panelSim = new JPanel();
 		panelConfigure = new JPanel();
 		
-	    tabbedPane.addTab("Sim", panelSim);
+	    tabbedPane.addTab("Simulator", panelSim);
 	    panelSim.setLayout(null);
 	    
 	    btnRun = new JButton("Run");
@@ -75,32 +75,30 @@ public class View extends JFrame {
 	    textAreaStateOutput.setBounds(345, 40, 600, 400);
 	    panelSim.add(textAreaStateOutput);
 	    
-	    tabbedPane.addTab("Configure", panelConfigure);
+	    tabbedPane.addTab("Konfigurieren", panelConfigure);
 	    panelConfigure.setLayout(null);
 	    
-	    lblAddProcess = new JLabel("Add processes for scheduling:");
+	    lblAddProcess = new JLabel("Prozesse hinzufuegen:");
 	    lblAddProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
 	    lblAddProcess.setBounds(10, 11, 300, 14);
 	    panelConfigure.add(lblAddProcess);
 	    
 	    inputTable = new JTable();
-	    inputTable.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
-	    inputTable.getTableHeader().setBackground(Color.ORANGE);
 	    scrollPaneInput = new JScrollPane(inputTable);
 	    scrollPaneInput.setBounds(10, 36, 600, 300);
 	    panelConfigure.add(scrollPaneInput);
 	    
-	    btnNewProcess = new JButton("Add process");
+	    btnNewProcess = new JButton("Hinzufuegen");
 	    btnNewProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
 	    btnNewProcess.setBounds(10, 347, 150, 23);
 	    panelConfigure.add(btnNewProcess);
 	    
-	    btnRemoveProcess = new JButton("Remove process");
+	    btnRemoveProcess = new JButton("Loeschen");
 	    btnRemoveProcess.setFont(new Font("Arial Black", Font.PLAIN, 12));
 	    btnRemoveProcess.setBounds(170, 347, 150, 23);
 	    panelConfigure.add(btnRemoveProcess);
 	    
-	    btnResetAll = new JButton("Reset all");
+	    btnResetAll = new JButton("Reset");
 	    btnResetAll.setFont(new Font("Arial Black", Font.PLAIN, 12));
 	    btnResetAll.setBounds(330, 347, 150, 23);
 	    panelConfigure.add(btnResetAll);
