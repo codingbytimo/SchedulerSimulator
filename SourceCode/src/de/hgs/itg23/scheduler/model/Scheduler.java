@@ -36,7 +36,7 @@ public class Scheduler {
 		v.getTextArea().setText("");
 		v.getTextAreaStateOutput().setText("Uebersicht der Zustaende der Prozesse fuer jeden Takt" + newline + "Legende: r = rechnen; b = blockiert; w = warten" + newline);
 		v.getTextAreaStateOutput().append(newline);
-		v.getTextArea().append("Scheduler LOG" + newline + "-----/Takt 0/-----");
+		v.getTextArea().append("Scheduler LOG - Zuerst wird der Takt angezeigt, danach was in diesem Takt passiert ist" + newline + "-----/Takt 0/-----");
 		v.getTextArea().append(newline);
 		int tick = 1;
 		this.run = true;
@@ -55,7 +55,7 @@ public class Scheduler {
 		while(run) {
 			Collections.sort(processes, prioComparator); // Processes will be sorted from highest to lowest priority
 			cacheProcess = processes.get(0);
-			// falls die Prozessliste leer ist; Passiert auch sobald der Scheduler fertig ist, da Prozesse, sobald sie fertig sind geloescht werden
+			// falls die Prozessliste des ausgewaelten Prozesses leer ist; Passiert auch sobald der Scheduler fertig ist, da Prozesse, sobald sie fertig sind geloescht werden
 			if(cacheProcess.getTimesList().isEmpty()) {
 				simOutput(cacheProcess, 2);
 				cacheProcess.setState(ProcessState.FINISHED);
@@ -95,9 +95,12 @@ public class Scheduler {
 					else {
 						if(cacheProcess.getpPrio() > 1) {
 							cacheProcess.setpPrio(cacheProcess.getpPrio() - 2);
+							if(cacheProcess.getpPrio() >= 1) v.getTextArea().append("Prio von " + cacheProcess.getpName() + " wurde von " + (cacheProcess.getpPrio() + 2) + " zu " + cacheProcess.getpPrio() + " geaendert." + newline);
+							else v.getTextArea().append("Prio von " + cacheProcess.getpName() + " ist nun 0." + newline);
 						}
 						else {
 							cacheProcess.setpPrio(0);
+							v.getTextArea().append("Prio von " + cacheProcess.getpName() + " ist nun 0." + newline);
 						}
 						cacheProcess.getTimesList().remove(0);
 						cacheProcess.setState(ProcessState.BLOCKED);
@@ -139,8 +142,17 @@ public class Scheduler {
 								}
 								else {
 									processes.get(p).getTimesList().remove(0);
-									processes.get(p).setIsCalc(!processes.get(p).getIsCalc());
-									processes.get(p).setState(ProcessState.WAITING);
+									// Falls nach dem blockieren der Prozess fertig ist
+									if(processes.get(p).getTimesList().isEmpty()) {
+										simOutput(processes.get(p), 2);
+										processes.get(p).getTickStates().add("FERTIG");
+										processes.get(p).setState(ProcessState.FINISHED);
+										processes.remove(p);
+									} 
+									else {
+										processes.get(p).setIsCalc(!processes.get(p).getIsCalc());
+										processes.get(p).setState(ProcessState.WAITING);
+									}
 								}
 							}
 						}
@@ -149,12 +161,6 @@ public class Scheduler {
 							simOutput(processes.get(p), 3);
 							processes.get(p).getTickStates().add("w");
 						}
-					}
-					// Falls der Scheduler bemerkt, dass ein Prozess fertig ist
-					else {
-						processes.get(p).getTickStates().add("FERTIG");
-						processes.get(p).setState(ProcessState.FINISHED);
-						processes.remove(p);
 					}
 					
 				}
@@ -173,18 +179,18 @@ public class Scheduler {
 		case 0:
 			// Alternative Ausgabe mit mehr Info
 			//v.getTextArea().append(process.getpName() + " rechnet, noch " + process.getTimesList().get(0) + " ZE...Die Prioritaet ist: " + process.getpPrio() + newline);
-			v.getTextArea().append(process.getpName() + " rechnet." + newline);
+			v.getTextArea().append(process.getpName() + " rechnet. " + "Prio: " + process.getpPrio() + newline);
 			break;
 		case 1:
 			// Alternative Ausgabe mit mehr Info
 			//v.getTextArea().append(process.getpName() + " ist blockiert fuer noch " + process.getTimesList().get(0) + " ZE..." + newline);
-			v.getTextArea().append(process.getpName() + " ist blockiert." + newline);
+			v.getTextArea().append(process.getpName() + " ist blockiert. " + "Prio: " + process.getpPrio() + newline);
 			break;
 		case 2:
 			v.getTextArea().append(process.getpName() + " ist komplett fertig." + newline);
 			break;
 		case 3:
-			v.getTextArea().append(process.getpName() + " wartet." + newline);
+			v.getTextArea().append(process.getpName() + " wartet. " + "Prio: " + process.getpPrio() + newline);
 			break;
 		default:
 			break;
